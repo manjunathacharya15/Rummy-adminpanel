@@ -46,5 +46,9 @@ export const Routes = {
     Toasts: { path: "/components/toasts" },
     WidgetsComponent: { path: "/components/widgets" },
     Widget: { path: "/components/userdetail" },
+    Practicegame1: { path: "/components/practicegame1" },
+    Practicegame2: { path: "/components/practicegame2" },
+    Practicegame3: { path: "/components/practicegame3" },
+    Practicegame4: { path: "/components/practicegame4" },
 
 };

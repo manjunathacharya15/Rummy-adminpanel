@@ -1,123 +1,388 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-export default class CreateExercise extends Component {
+import {  faCog, faHome, faSearch,faTrashAlt,faPlus,faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from '@themesberg/react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+
+
+export default class buttons extends Component {
+
   constructor(props) {
     super(props);
 
-    this.onChangeemail = this.onChangeemail.bind(this);
-    this.onChangeoldpassword = this.onChangeoldpassword.bind(this);
-    this.onChangenewpassword=this.onChangenewpassword.bind(this);
-   
-  
-   
-    
-
+    this.deleteCustomer = this.deleteCustomer.bind(this)
+    this.onChangename = this.onChangename.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-
     this.state = {
-      email: '',
-      oldpassword: '',
-      newpassword:'',
+      name:'',
+      customers: []
+    };
+  }
+  
+
+  componentDidMount() {
    
-
+      axios.post('https://acabnodejs.herokuapp.com/subadmin/')
+    .then(response => {
       
-      customer:[]
+      this.setState({ customers: response.data})
       
-      
-    }
-  }
+      let result=response.data
+      this.setState({customers:
+        result.map(e => {
+          return{
+            select : false,
+            id : e._id,
+            name : e.name,
+          
+            email:e.email,
+            profilepicture:e.profilepicture,
+            role:e.role
+          
 
-  onChangeemail(e) {
-    this.setState({
-      email: e.target.value
+          }
+        })
+
     })
-  }
-
-  onChangeoldpassword(e) {
-    this.setState({
-      oldpassword: e.target.value
     })
-  }
-  onChangenewpassword(e) {
-    this.setState({
-      newpassword: e.target.value
+    .catch((error) => {
+      console.log(error);
     })
+    
   }
-  
-
-
+  deleteCustomerByIds = () => {
+  const arrayids = [];
+    this.state.customers.forEach(d => {
+      if(d.select) { 
+        arrayids.push(d.id);
+      }
+    });
+   
+    axios.post('https://acabnodejs.herokuapp.com/subadmin/delete',{arrayids:arrayids})
+   
+    .then(response=>{
+      if(response.data.message==="Deleted Successfully")
+      {
+        window.location.reload(true)
+      }
  
- 
+    })
   
+    ;
+    
+  };
+  onChangename(e) {
+    this.setState({
+      name: e.target.value
+    })
+  }
   onSubmit(e) {
     e.preventDefault();
 
     const customer = {
-      email: this.state.email,
-      oldpassword: this.state.oldpassword,
-      newpassword: this.state.newpassword,
-      
-     
-      
-
+      name: this.state.name
     }
-
-
-    axios.post('https://arummynodejs.herokuapp.com/admin/changepassword', customer)
-      .then(res =>{
-        if(res.data.message==="Password Change Successful")
-        {
-          window.location="/"
-        }
-      } )
-        
+    axios.post('https://acabnodejs.herokuapp.com/subadmin/search', customer)
+      .then(res => {
+        this.setState({ customers: res.data })
+      })
+      .catch((error) => {
+             console.log(error);
+           })
       
   }
+  deleteCustomer(id) {
+    axios.delete('https://acabnodejs.herokuapp.com/subadmin/'+id)
+      .then(response => { 
+        console.log(response)
+        window.location.reload(true)
 
-  render() {
+      });
+
+    this.setState({
+      customers: this.state.customers.filter(el => el._id !== id)
+    })
+  }
+  
+  customerList() {
+    this.state.customers.sort(function(a,b){
+      if(a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+      if(a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+      return 0;
+     })
+
+    return this.state.customers.map(currentcustomer => (
+      <tr>
+        {/* <td  style={{border:"1px double black",textAlign:"center"}}>
+        <input type="checkbox" onChange={e => {
+                                let value = e.target.checked
+                                console.log(this.state)
+                                this.state.customers.find(o => o.id=== currentcustomer.id).select = value
+                                this.setState(this.state);
+                            }} />
+      </td> */}
+      {/* <td style={{border:"1px double black",textAlign:"center"}}><Link to={"/components/forms/"+currentcustomer.id}>{currentcustomer.name}</Link></td>
+      
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.email}</td>
+      
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.profilepicture}</td>
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.role}</td>
+      <td style={{border:"1px double black",textAlign:"center"}}>
+       <a  onClick={() => { this.deleteCustomer(currentcustomer.id) }}><FontAwesomeIcon icon={faTrash} /></a>
+    </td> */}
+      
+      
+      
+    
+    </tr>
+     
+    ))
+    
+  }
+  
+  
+ 
+
+
+
+  render()
+ {
+
+  
     return (
-    <div style={{marginTop:"100px"}}>
-      <h3 style={{}}>Create New Password </h3>
-      <br/>
-      <form onSubmit={this.onSubmit}>
-      <div className="form-group" style={{width:"450px"}} > 
-          <label style={{}}>Email: </label>
-          <input  type="text"
-              required
-              className="form-control"
-              value={this.state.email}
-              onChange={this.onChangeemail}
-              />
+      
+      
+      <div style={{marginTop:"50px"}}>
+        
+
+      <div className="table-settings mb-4">
+        <Row className="justify-content-between align-items-center">
+          <Col xs={8} md={6} lg={3} xl={4}>
+            <Form onSubmit={this.onSubmit}>
+            <InputGroup style={{width:"100%"}} >
+              <InputGroup.Text>
+                <FontAwesomeIcon icon={faSearch} />
+              </InputGroup.Text>
+              <Form.Control type="text" placeholder="Search" value={this.state.name} onChange={this.onChangename} />
+            </InputGroup>
+            </Form>
+          </Col>
+          
+         
+          </Row>
+         
+
+          </div>
+          <div>
+          <Row>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Joker Type</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Players</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Bet Value</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Action</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            </Row>
+          </div>
+          <div>
+            <Row>
+            <Col md={1} className="mb-3" style={{marginLeft:"1000px"}} >
+           <button class="btn btn-info" >Submit</button>
+              </Col>
+              <Col md={1} className="mb-3">
+           <button class="btn btn-danger" >Cancel</button>
+              </Col>
+            </Row>
+
+          </div>
+          <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div className="d-block mb-4 mb-md-0">
+          <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
+            <Breadcrumb.Item><FontAwesomeIcon icon={faHome} /></Breadcrumb.Item>
+            <Breadcrumb.Item>Cash Deal Rummy List</Breadcrumb.Item>
+          
+          </Breadcrumb>
+          {/* <h4>Sub Admin</h4>
+          <p className="mb-0">Sub Admin Details .</p> */}
         </div>
-        <br/>
-        <div className="form-group" style={{width:"450px"}}> 
-          <label>Old Password: </label>
-          <input  type="password"
-              required
-              className="form-control"
-              value={this.state.oldpassword}
-              onChange={this.onChangeoldpassword}
-              />
+      
+      </div>
+        
+        <div class="container">
+
+
+
+<div class="row">
+  <div class="col-md">
+
+             <div style={{display:"flex"}}>
+    <div style={{width:"70%"}}><h4><b></b></h4></div>
+    <div style={{marginTop:"5px"}}>
+    
+        
+       
         </div>
-        <br/>
-        <div className="form-group" style={{width:"450px"}}>
-          <label>New Password </label>
-          <input 
-              type="password" 
-              className="form-control"
-              value={this.state.newpassword}
-              onChange={this.onChangenewpassword}
-              />
-        </div>
-       <br/>
+    
+   
+    
+
+</div>
+
+        <div style={{overflowX:"scroll",overflowY:"scroll"}}>
+        
+          
        
        
-        <div className="form-group" style={{}}>
-          <input type="submit" value="Change  password" className="btn btn-primary" />
+        <table className="table">
+          <thead className="thead-light">
+            <tr>
+           
+           
+              <th style={{border:"1px double black",width:"150px" ,backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Live</th>
+
+              <th style={{border:"1px double black",width:"150px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Table Name</th>
+             
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Joker Type</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Point Value</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Min Entry</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Status</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Player</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Action</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Delete</th>
+              
+              
+              
+           
+            </tr>
+            
+          </thead>
+          <tbody>
+            { this.customerList() }
+          </tbody>
+         
+        </table>
         </div>
-      </form>
-    </div>
+        </div>
+        </div>
+        </div>
+        
+      </div>
     )
   }
 }

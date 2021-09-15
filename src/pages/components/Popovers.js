@@ -1,97 +1,267 @@
+import React,{Component} from "react"
+import axios from 'axios';
+// import moment from "moment-timezone";
+import DatePicker from 'react-datepicker'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { Col, Row, Card, Form, Button} from '@themesberg/react-bootstrap';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from "moment-timezone";
+// import moment from "moment";
 
-import React from 'react';
-import { Col, Row, Button, Popover, Container, OverlayTrigger } from '@themesberg/react-bootstrap';
+export default class Accordion extends Component{
+    constructor(props) {
+        super(props);
+    
+        
+        this.onChangename = this.onChangename.bind(this);
+        this.onChangeemail= this.onChangeemail.bind(this);
+        this.onChangeprofilepicture = this.onChangeprofilepicture.bind(this);
+        
+        
+        this.onChangepassword = this.onChangepassword.bind(this);
+        this.onChangerole = this.onChangerole.bind(this);
 
-import Documentation from "../../components/Documentation";
+       
+      
+       
+        
 
+       
 
-export default () => {
-  return (
-    <article>
-      <Container className="px-0">
-        <Row className="d-flex flex-wrap flex-md-nowrap align-items-center py-4">
-          <Col className="d-block mb-4 mb-md-0">
-            <h1 className="h2">Popovers</h1>
-            <p className="mb-0">
-              Use popovers to indicate extra content for your users when clicking on an element.
-          </p>
-          </Col>
-        </Row>
-
-        <Documentation
-          title="Example"
-          description={
-            <p>The <code>&#x3C;OverlayTrigger&#x3E;</code> and <code>&#x3C;Popover&#x3E;</code> component can be used to show extra information by clicking on a given element. You can set the title and content using the <code>&#x3C;Popover.Title&#x3E;</code> and <code>&#x3C;Popover.Content&#x3E;</code> subcomponents. Make sure you wrap the <code>&#x3C;OverlayTrigger&#x3E;</code> component around the popover and the element that will trigger the event.</p>
+        this.onSubmit = this.onSubmit.bind(this);
+        this.state = {
+          name:'',
+          email:'',
+          file1: null,
+          password:'',
+          role:'',
+         
+            trainer:[]
+            
+            
           }
-          scope={{ Button, Popover, OverlayTrigger }}
-          imports={`import { Button, Popover, OverlayTrigger } from '@themesberg/react-bootstrap';`}
-          example={`<OverlayTrigger
-  trigger="click"
-  overlay={
-    <Popover>
-      <Popover.Title>Popover on top</Popover.Title>
-      <Popover.Content>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</Popover.Content>
-    </Popover>
-  }>
-  <Button variant="secondary" size="sm" className="m-2">Popover on top</Button>
-</OverlayTrigger>`}
-        />
-
-        <Documentation
-          title="Popover placement"
-          description={
-            <p>The <code>&#x3C;Popover&#x3E;</code> can also be positioned accordingly, using the <code>placement="*"</code> attribute, where the value can be either <code>top</code>, <code>right</code>, <code>bottom</code> or <code>left</code>.</p>
+        }
+        
+        onChangename(e) {
+          this.setState({
+            name: e.target.value
+          })
+        }
+          
+          onChangeemail(e) {
+            this.setState({
+              email: e.target.value
+            })
           }
-          scope={{ Button, Popover, OverlayTrigger }}
-          imports={`import { Button, Popover, OverlayTrigger } from '@themesberg/react-bootstrap';`}
-          example={`<React.Fragment>
-  <OverlayTrigger
-    placement="top"
-    trigger="click"
-    overlay={
-      <Popover>
-        <Popover.Title>Popover on top</Popover.Title>
-        <Popover.Content>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</Popover.Content>
-      </Popover>
-    }>
-    <Button variant="secondary" size="sm" className="m-2">Popover on top</Button>
-  </OverlayTrigger>
-  <OverlayTrigger
-    placement="right"
-    trigger="click"
-    overlay={
-      <Popover>
-        <Popover.Title>Popover on right</Popover.Title>
-        <Popover.Content>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</Popover.Content>
-      </Popover>
-    }>
-    <Button variant="secondary" size="sm" className="m-2">Popover on right</Button>
-  </OverlayTrigger>
-  <OverlayTrigger
-    placement="bottom"
-    trigger="click"
-    overlay={
-      <Popover>
-        <Popover.Title>Popover on bottom</Popover.Title>
-        <Popover.Content>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</Popover.Content>
-      </Popover>
-    }>
-    <Button variant="secondary" size="sm" className="m-2">Popover on bottom</Button>
-  </OverlayTrigger>
-  <OverlayTrigger
-    placement="left"
-    trigger="click"
-    overlay={
-      <Popover>
-        <Popover.Title>Popover on left</Popover.Title>
-        <Popover.Content>Vivamus sagittis lacus vel augue laoreet rutrum faucibus.</Popover.Content>
-      </Popover>
-    }>
-    <Button variant="secondary" size="sm" className="m-2">Popover on left</Button>
-  </OverlayTrigger>
-</React.Fragment>`}
-        />
-      </Container>
-    </article>
-  );
-};
+          onChangeprofilepicture(e) {
+            this.setState({
+            file1: e.target.files[0]
+            })
+          }
+          onChangepassword(e) {
+            this.setState({
+              password: e.target.value
+            })
+          }
+          onChangerole(e) {
+            this.setState({
+            role: e.target.value
+            })
+          }
+         
+      
+          
+        
+          
+          
+          
+          onback(){
+            window.location='/#/components/alerts'
+            }
+     
+          onSubmit(e) {
+            e.preventDefault();
+
+  
+ 
+    
+     
+  
+   
+  
+            const formData=new FormData();
+            formData.append('name',this.state.name);
+            formData.append('email',this.state.email);
+            formData.append('profilepicture',this.state.file1);
+            formData.append('role',this.state.role);
+            formData.append('password',this.state.password);
+            
+          
+            
+            
+            const config={
+              headers:{
+                'content-type':'multipart/form-data'
+              }
+        
+            
+            }
+            axios.post('https://acabnodejs.herokuapp.com/subadmin/add', formData)
+            .then(function(response){
+        
+              if(response.data ==='Subadmin added!'){
+                alert("Subadmin Added")
+                  window.location='/#/components/alerts'
+              }
+             }) 
+          }
+        
+    render(){
+        return(
+            <div style={{marginTop:"50px"}}>
+              <Card border="light" className="bg-white shadow-sm mb-4">
+      <Card.Body>
+        <h5 className="mb-4">Table Details</h5>
+        <Form onSubmit={this.onSubmit}>
+          <Row>
+            <Col md={6} className="mb-3">
+              <Form.Group id="firstName">
+                <Form.Label> Game:</Form.Label>
+                <select class="form-control" id="calculator" name="game" onChange={this.onChangedgender} value={this.state.dgender}>
+                                                    <option value="Crash Game">Crash Game</option>
+                                                    <option value="Free Game">Free Game</option>
+                                                    
+                                                    
+                                                    
+                                                </select>
+              </Form.Group>
+            </Col>
+           
+            
+
+            
+            
+          </Row>
+          <Row className="align-items-center">
+          <Col md={6} className="mb-3">
+              <Form.Group id="firstName">
+                <Form.Label> Game Type:</Form.Label>
+                <select class="form-control" id="calculator" name="gametype" onChange={this.onChangedgender} value={this.state.dgender}>
+                                                    <option value="Point Rummy">Point Rummy</option>
+                                                    <option value="Pool Rummy">Pool Rummy</option>
+                                                    <option value="Deal Rummy">Deal Rummy</option>
+                                                    <option value="Papplu Rummy">Papplu Rammy</option>
+                                                    
+                                                    
+                                                    
+                                                </select>
+              </Form.Group>
+            </Col>
+            
+          </Row>
+          <Row>
+          <Col md={6} className="mb-3">
+              <Form.Group id="emal">
+                <Form.Label>Table Name:</Form.Label>
+                <Form.Control required type="text" placeholder="" value={this.state.password}
+              onChange={this.onChangepassword} name="password"
+              
+             />
+          
+              
+              </Form.Group>
+              </Col>
+         
+             
+            </Row>
+            <Row>
+          <Col md={6} className="mb-3">
+              <Form.Group id="emal">
+                <Form.Label>Table no:</Form.Label>
+                <Form.Control required type="number" placeholder="" value={this.state.password}
+              onChange={this.onChangepassword} name="password"
+              
+             />
+          
+              
+              </Form.Group>
+              </Col>
+         
+             
+            </Row>
+            <Row>
+            <Col md={6} className="mb-3">
+              <Form.Group id="phone">
+                <Form.Label>Beat/Entry:</Form.Label>
+                <Form.Control required type="number" placeholder="" value={this.state.password}
+              onChange={this.onChangepassword} name="password"
+              
+             />
+              </Form.Group>
+            </Col>
+            
+            
+            
+            </Row>
+            <Row>
+            <Col md={6} className="mb-3">
+              <Form.Group id="percenta">
+                <Form.Label>Value ponits(Rs):</Form.Label>
+                <Form.Control required type="number" placeholder="" value={this.state.role}
+              onChange={this.onChangerole} max="100" name="role" />
+              </Form.Group>
+            </Col>
+            </Row>
+            <Row className="align-items-center">
+          <Col md={6} className="mb-3">
+              <Form.Group id="firstName">
+                <Form.Label> Sitting Capacity:</Form.Label>
+                <select class="form-control" id="calculator" name="sittingcapacity" onChange={this.onChangedgender} value={this.state.dgender}>
+                                                    <option value="2 Seat">2 Seat</option>
+                                                    <option value="6 Seat">6 Seat</option>
+                                                   
+                                                    
+                                                    
+                                                </select>
+              </Form.Group>
+            </Col>
+            
+          </Row>
+          <Row className="align-items-center">
+          <Col md={6} className="mb-3">
+              <Form.Group id="firstName">
+                <Form.Label> Table Status:</Form.Label>
+                <select class="form-control" id="calculator" name="tablestatus" onChange={this.onChangedgender} value={this.state.dgender}>
+                                                    <option value="Live">Live</option>
+                                                    <option value="Stop">Stop</option>
+                                                   
+                                                    
+                                                    
+                                                    
+                                                </select>
+              </Form.Group>
+            </Col>
+            
+          </Row>
+            <Row>
+            <Col md={3} className="mb-3">
+            <div className="mt-3">
+            <Button variant="primary" type="submit">Submit </Button>
+          
+          </div>
+              </Col>
+              
+              </Row>
+          
+          
+        
+        </Form>
+     
+      </Card.Body>
+    </Card>
+                
+            </div>
+        )
+    }
+}

@@ -1,220 +1,267 @@
+import React,{Component} from "react"
+import axios from 'axios';
+// import moment from "moment-timezone";
+import DatePicker from 'react-datepicker'
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { Col, Row, Card, Form, Button} from '@themesberg/react-bootstrap';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from "moment-timezone";
+// import moment from "moment";
 
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDoubleLeft, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons';
-import { Col, Row, Card, Container, Pagination } from '@themesberg/react-bootstrap';
+export default class Accordion extends Component{
+    constructor(props) {
+        super(props);
+    
+        
+        this.onChangename = this.onChangename.bind(this);
+        this.onChangeemail= this.onChangeemail.bind(this);
+        this.onChangeprofilepicture = this.onChangeprofilepicture.bind(this);
+        
+        
+        this.onChangepassword = this.onChangepassword.bind(this);
+        this.onChangerole = this.onChangerole.bind(this);
 
-import Documentation from "../../components/Documentation";
+       
+      
+       
+        
 
+       
 
-export default () => {
-  return (
-    <article>
-      <Container className="px-0">
-        <Row className="d-flex flex-wrap flex-md-nowrap align-items-center py-4">
-          <Col className="d-block mb-4 mb-md-0">
-            <h1 className="h2">Pagination</h1>
-            <p className="mb-0">
-              Use pagination elements to organize posts or other models of data into groups.
-            </p>
-          </Col>
-        </Row>
-
-        <Documentation
-          title="Pagination"
-          description={
-            <>
-              <p>The <code>&#x3C;Pagination&#x3E;</code> component is important to use when you have data that can be potentially so numerous that you need to paginate it. We've created two main handles that you can use when the previous or next item button has been click, called <code>onPrevItem</code> and <code>onNextItem</code>.</p>
-              <p>You can use the <code>items = []</code> array to add the number of pagination items, and set the <code>totalPages</code> pages constant to set that maximum amount of pages to show in the pagination element.</p>
-              <p>Also you can use a function as <code>handlePaginationChange</code> to add some custome logic when user goes to another page (e.g fetch new data).</p>
-            </>
+        this.onSubmit = this.onSubmit.bind(this);
+        this.state = {
+          name:'',
+          email:'',
+          file1: null,
+          password:'',
+          role:'',
+         
+            trainer:[]
+            
+            
           }
-          scope={{ Col, Card, Pagination, FontAwesomeIcon, faAngleDoubleLeft, faAngleDoubleRight }}
-          imports={`import React, { useState } from "react";
-import { Col, Card, Pagination } from '@themesberg/react-bootstrap';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDoubleLeft, faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";`}
-          example={`const CustomPagination = (props) => {
-  const [activeItem, setActiveItem] = React.useState(2);
-  const { totalPages = 5, size = "md", withIcons = false, disablePrev = false } = props;
+        }
+        
+        onChangename(e) {
+          this.setState({
+            name: e.target.value
+          })
+        }
+          
+          onChangeemail(e) {
+            this.setState({
+              email: e.target.value
+            })
+          }
+          onChangeprofilepicture(e) {
+            this.setState({
+            file1: e.target.files[0]
+            })
+          }
+          onChangepassword(e) {
+            this.setState({
+              password: e.target.value
+            })
+          }
+          onChangerole(e) {
+            this.setState({
+            role: e.target.value
+            })
+          }
+         
+      
+          
+        
+          
+          
+          
+          onback(){
+            window.location='/#/components/alerts'
+            }
+     
+          onSubmit(e) {
+            e.preventDefault();
 
-  const onPrevItem = () => {
-    const prevActiveItem = activeItem === 1 ? activeItem : activeItem - 1;
-    setActiveItem(prevActiveItem);
-  };
-
-  const onNextItem = (totalPages) => {
-    const nextActiveItem = activeItem === totalPages ? activeItem : activeItem + 1;
-    setActiveItem(nextActiveItem);
-  };
-
-  const items = [];
-  for (let number = 1; number <= totalPages; number++) {
-    const isItemActive = activeItem === number;
-
-    const handlePaginationChange = () => {
-      setActiveItem(number);
-    };
-
-    items.push(
-      <Pagination.Item active={isItemActive} key={number} onClick={handlePaginationChange}>
-        {number}
-      </Pagination.Item>
-    );
-  };
-
-  return (
-    <Pagination size={size} className="mt-3">
-      <Pagination.Prev disabled={disablePrev} onClick={onPrevItem}>
-        {withIcons ? <FontAwesomeIcon icon={faAngleDoubleLeft} /> : "Previous"}
-      </Pagination.Prev>
-      {items}
-      <Pagination.Next onClick={() => onNextItem(totalPages)}>
-        {withIcons ? <FontAwesomeIcon icon={faAngleDoubleRight} /> : "Next"}
-      </Pagination.Next>
-    </Pagination>
-  );
-};
-
-render(
-  <Col xl={12}>
-    <Card border="light">
+  
+ 
+    
+     
+  
+   
+  
+            const formData=new FormData();
+            formData.append('name',this.state.name);
+            formData.append('email',this.state.email);
+            formData.append('profilepicture',this.state.file1);
+            formData.append('role',this.state.role);
+            formData.append('password',this.state.password);
+            
+          
+            
+            
+            const config={
+              headers:{
+                'content-type':'multipart/form-data'
+              }
+        
+            
+            }
+            axios.post('https://acabnodejs.herokuapp.com/subadmin/add', formData)
+            .then(function(response){
+        
+              if(response.data ==='Subadmin added!'){
+                alert("Subadmin Added")
+                  window.location='/#/components/alerts'
+              }
+             }) 
+          }
+        
+    render(){
+        return(
+            <div style={{marginTop:"50px"}}>
+              <Card border="light" className="bg-white shadow-sm mb-4">
       <Card.Body>
-        <CustomPagination withIcons />
+        <h5 className="mb-4">Table Details</h5>
+        <Form onSubmit={this.onSubmit}>
+          <Row>
+            <Col md={6} className="mb-3">
+              <Form.Group id="firstName">
+                <Form.Label> Game:</Form.Label>
+                <select class="form-control" id="calculator" name="game" onChange={this.onChangedgender} value={this.state.dgender}>
+                                                    <option value="Crash Game">Crash Game</option>
+                                                    <option value="Free Game">Free Game</option>
+                                                    
+                                                    
+                                                    
+                                                </select>
+              </Form.Group>
+            </Col>
+           
+            
+
+            
+            
+          </Row>
+          <Row className="align-items-center">
+          <Col md={6} className="mb-3">
+              <Form.Group id="firstName">
+                <Form.Label> Game Type:</Form.Label>
+                <select class="form-control" id="calculator" name="gametype" onChange={this.onChangedgender} value={this.state.dgender}>
+                                                    <option value="Point Rummy">Point Rummy</option>
+                                                    <option value="Pool Rummy">Pool Rummy</option>
+                                                    <option value="Deal Rummy">Deal Rummy</option>
+                                                    <option value="Papplu Rummy">Papplu Rammy</option>
+                                                    
+                                                    
+                                                    
+                                                </select>
+              </Form.Group>
+            </Col>
+            
+          </Row>
+          <Row>
+          <Col md={6} className="mb-3">
+              <Form.Group id="emal">
+                <Form.Label>Table Name:</Form.Label>
+                <Form.Control required type="text" placeholder="" value={this.state.password}
+              onChange={this.onChangepassword} name="password"
+              
+             />
+          
+              
+              </Form.Group>
+              </Col>
+         
+             
+            </Row>
+            <Row>
+          <Col md={6} className="mb-3">
+              <Form.Group id="emal">
+                <Form.Label>Table no:</Form.Label>
+                <Form.Control required type="number" placeholder="" value={this.state.password}
+              onChange={this.onChangepassword} name="password"
+              
+             />
+          
+              
+              </Form.Group>
+              </Col>
+         
+             
+            </Row>
+            <Row>
+            <Col md={6} className="mb-3">
+              <Form.Group id="phone">
+                <Form.Label>Beat/Entry:</Form.Label>
+                <Form.Control required type="number" placeholder="" value={this.state.password}
+              onChange={this.onChangepassword} name="password"
+              
+             />
+              </Form.Group>
+            </Col>
+            
+            
+            
+            </Row>
+            <Row>
+            <Col md={6} className="mb-3">
+              <Form.Group id="percenta">
+                <Form.Label>Value ponits(Rs):</Form.Label>
+                <Form.Control required type="number" placeholder="" value={this.state.role}
+              onChange={this.onChangerole} max="100" name="role" />
+              </Form.Group>
+            </Col>
+            </Row>
+            <Row className="align-items-center">
+          <Col md={6} className="mb-3">
+              <Form.Group id="firstName">
+                <Form.Label> Sitting Capacity:</Form.Label>
+                <select class="form-control" id="calculator" name="sittingcapacity" onChange={this.onChangedgender} value={this.state.dgender}>
+                                                    <option value="2 Seat">2 Seat</option>
+                                                    <option value="6 Seat">6 Seat</option>
+                                                   
+                                                    
+                                                    
+                                                </select>
+              </Form.Group>
+            </Col>
+            
+          </Row>
+          <Row className="align-items-center">
+          <Col md={6} className="mb-3">
+              <Form.Group id="firstName">
+                <Form.Label> Table Status:</Form.Label>
+                <select class="form-control" id="calculator" name="tablestatus" onChange={this.onChangedgender} value={this.state.dgender}>
+                                                    <option value="Live">Live</option>
+                                                    <option value="Stop">Stop</option>
+                                                   
+                                                    
+                                                    
+                                                    
+                                                </select>
+              </Form.Group>
+            </Col>
+            
+          </Row>
+            <Row>
+            <Col md={3} className="mb-3">
+            <div className="mt-3">
+            <Button variant="primary" type="submit">Submit </Button>
+          
+          </div>
+              </Col>
+              
+              </Row>
+          
+          
+        
+        </Form>
+     
       </Card.Body>
     </Card>
-  </Col>
-);`}
-        />
-
-        <Documentation
-          title="Disabled and active states"
-          description={
-            <p>Use the <code>disabled</code> attribute to disable one or either of the pagination items.</p>
-          }
-          scope={{ Col, Card, Pagination, FontAwesomeIcon, faAngleDoubleLeft, faAngleDoubleRight }}
-          imports={`import React, { useState } from "react";
-import { Col, Card, Pagination } from '@themesberg/react-bootstrap';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDoubleLeft, faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";`}
-          example={`const CustomPagination = (props) => {
-  const [activeItem, setActiveItem] = React.useState(2);
-  const { totalPages = 5, size = "md", withIcons = false, disablePrev = false } = props;
-
-  const onPrevItem = () => {
-    const prevActiveItem = activeItem === 1 ? activeItem : activeItem - 1;
-    setActiveItem(prevActiveItem);
-  };
-
-  const onNextItem = (totalPages) => {
-    const nextActiveItem = activeItem === totalPages ? activeItem : activeItem + 1;
-    setActiveItem(nextActiveItem);
-  };
-
-  const items = [];
-  for (let number = 1; number <= totalPages; number++) {
-    const isItemActive = activeItem === number;
-
-    const handlePaginationChange = () => {
-      setActiveItem(number);
-    };
-
-    items.push(
-      <Pagination.Item active={isItemActive} key={number} onClick={handlePaginationChange}>
-        {number}
-      </Pagination.Item>
-    );
-  };
-
-  return (
-    <Pagination size={size} className="mt-3">
-      <Pagination.Prev disabled={disablePrev} onClick={onPrevItem}>
-        {withIcons ? <FontAwesomeIcon icon={faAngleDoubleLeft} /> : "Previous"}
-      </Pagination.Prev>
-      {items}
-      <Pagination.Next onClick={() => onNextItem(totalPages)}>
-        {withIcons ? <FontAwesomeIcon icon={faAngleDoubleRight} /> : "Next"}
-      </Pagination.Next>
-    </Pagination>
-  );
-};
-
-render(
-  <Col xl={12}>
-    <Card border="light">
-      <Card.Body>
-        <CustomPagination disablePrev />
-      </Card.Body>
-    </Card>
-  </Col>
-);`}
-        />
-
-        <Documentation
-          title="Sizing"
-          description={
-            <p>As throughout the whole app, you can use either the <code>sm</code>, default or <code>lg</code> size modifiers by updating the <code>size</code> attribute.</p>
-          }
-          scope={{ Col, Card, Pagination, FontAwesomeIcon, faAngleDoubleLeft, faAngleDoubleRight }}
-          imports={`import React, { useState } from "react";
-import { Col, Card, Pagination } from '@themesberg/react-bootstrap';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDoubleLeft, faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";`}
-          example={`const CustomPagination = (props) => {
-  const [activeItem, setActiveItem] = React.useState(2);
-  const { totalPages = 5, size = "md", withIcons = false, disablePrev = false } = props;
-
-  const onPrevItem = () => {
-    const prevActiveItem = activeItem === 1 ? activeItem : activeItem - 1;
-    setActiveItem(prevActiveItem);
-  };
-
-  const onNextItem = (totalPages) => {
-    const nextActiveItem = activeItem === totalPages ? activeItem : activeItem + 1;
-    setActiveItem(nextActiveItem);
-  };
-
-  const items = [];
-  for (let number = 1; number <= totalPages; number++) {
-    const isItemActive = activeItem === number;
-
-    const handlePaginationChange = () => {
-      setActiveItem(number);
-    };
-
-    items.push(
-      <Pagination.Item active={isItemActive} key={number} onClick={handlePaginationChange}>
-        {number}
-      </Pagination.Item>
-    );
-  };
-
-  return (
-    <Pagination size={size} className="mt-3">
-      <Pagination.Prev disabled={disablePrev} onClick={onPrevItem}>
-        {withIcons ? <FontAwesomeIcon icon={faAngleDoubleLeft} /> : "Previous"}
-      </Pagination.Prev>
-      {items}
-      <Pagination.Next onClick={() => onNextItem(totalPages)}>
-        {withIcons ? <FontAwesomeIcon icon={faAngleDoubleRight} /> : "Next"}
-      </Pagination.Next>
-    </Pagination>
-  );
-};
-
-render(
-  <Col xl={12}>
-    <Card border="light">
-      <Card.Body>
-        <CustomPagination size="lg" />
-        <CustomPagination size="md" />
-        <CustomPagination size="sm" />
-      </Card.Body>
-    </Card>
-  </Col>
-);`}
-        />
-      </Container>
-    </article>
-  );
-};
+                
+            </div>
+        )
+    }
+}

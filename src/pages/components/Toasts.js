@@ -1,106 +1,388 @@
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-import React, { useState } from 'react';
+import {  faCog, faHome, faSearch,faTrashAlt,faPlus,faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from '@themesberg/react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBootstrap } from '@fortawesome/free-brands-svg-icons';
-import { Col, Row, Card, Toast, Button, Container } from '@themesberg/react-bootstrap';
-
-import Documentation from "../../components/Documentation";
 
 
-export default () => {
-  const [showDefault, setShowDefault] = useState(true);
-  const [showPrimary, setShowPrimary] = useState(true);
-  const [showTertiary, setShowTertiary] = useState(true);
 
-  const handleCloseDefault = () => setShowDefault(false);
-  const handleClosePrimary = () => setShowPrimary(false);
-  const handleCloseTertiary = () => setShowTertiary(false);
+export default class buttons extends Component {
 
-  return (
-    <article>
-      <Container className="px-0">
-        <Row className="d-flex flex-wrap flex-md-nowrap align-items-center py-4">
-          <Col className="d-block mb-4 mb-md-0">
-            <h1 className="h2">Toasts</h1>
-            <p className="mb-0">
-              Use toasts to indicate messages.
-          </p>
+  constructor(props) {
+    super(props);
+
+    this.deleteCustomer = this.deleteCustomer.bind(this)
+    this.onChangename = this.onChangename.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.state = {
+      name:'',
+      customers: []
+    };
+  }
+  
+
+  componentDidMount() {
+   
+      axios.post('https://acabnodejs.herokuapp.com/subadmin/')
+    .then(response => {
+      
+      this.setState({ customers: response.data})
+      
+      let result=response.data
+      this.setState({customers:
+        result.map(e => {
+          return{
+            select : false,
+            id : e._id,
+            name : e.name,
+          
+            email:e.email,
+            profilepicture:e.profilepicture,
+            role:e.role
+          
+
+          }
+        })
+
+    })
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    
+  }
+  deleteCustomerByIds = () => {
+  const arrayids = [];
+    this.state.customers.forEach(d => {
+      if(d.select) { 
+        arrayids.push(d.id);
+      }
+    });
+   
+    axios.post('https://acabnodejs.herokuapp.com/subadmin/delete',{arrayids:arrayids})
+   
+    .then(response=>{
+      if(response.data.message==="Deleted Successfully")
+      {
+        window.location.reload(true)
+      }
+ 
+    })
+  
+    ;
+    
+  };
+  onChangename(e) {
+    this.setState({
+      name: e.target.value
+    })
+  }
+  onSubmit(e) {
+    e.preventDefault();
+
+    const customer = {
+      name: this.state.name
+    }
+    axios.post('https://acabnodejs.herokuapp.com/subadmin/search', customer)
+      .then(res => {
+        this.setState({ customers: res.data })
+      })
+      .catch((error) => {
+             console.log(error);
+           })
+      
+  }
+  deleteCustomer(id) {
+    axios.delete('https://acabnodejs.herokuapp.com/subadmin/'+id)
+      .then(response => { 
+        console.log(response)
+        window.location.reload(true)
+
+      });
+
+    this.setState({
+      customers: this.state.customers.filter(el => el._id !== id)
+    })
+  }
+  
+  customerList() {
+    this.state.customers.sort(function(a,b){
+      if(a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+      if(a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+      return 0;
+     })
+
+    return this.state.customers.map(currentcustomer => (
+      <tr>
+        {/* <td  style={{border:"1px double black",textAlign:"center"}}>
+        <input type="checkbox" onChange={e => {
+                                let value = e.target.checked
+                                console.log(this.state)
+                                this.state.customers.find(o => o.id=== currentcustomer.id).select = value
+                                this.setState(this.state);
+                            }} />
+      </td> */}
+      {/* <td style={{border:"1px double black",textAlign:"center"}}><Link to={"/components/forms/"+currentcustomer.id}>{currentcustomer.name}</Link></td>
+      
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.email}</td>
+      
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.profilepicture}</td>
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.role}</td>
+      <td style={{border:"1px double black",textAlign:"center"}}>
+       <a  onClick={() => { this.deleteCustomer(currentcustomer.id) }}><FontAwesomeIcon icon={faTrash} /></a>
+    </td> */}
+      
+      
+      
+    
+    </tr>
+     
+    ))
+    
+  }
+  
+  
+ 
+
+
+
+  render()
+ {
+
+  
+    return (
+      
+      
+      <div style={{marginTop:"50px"}}>
+        
+
+      <div className="table-settings mb-4">
+        <Row className="justify-content-between align-items-center">
+          <Col xs={8} md={6} lg={3} xl={4}>
+            <Form onSubmit={this.onSubmit}>
+            <InputGroup style={{width:"100%"}} >
+              <InputGroup.Text>
+                <FontAwesomeIcon icon={faSearch} />
+              </InputGroup.Text>
+              <Form.Control type="text" placeholder="Search" value={this.state.name} onChange={this.onChangename} />
+            </InputGroup>
+            </Form>
           </Col>
-        </Row>
+          
+         
+          </Row>
+         
 
-        <Documentation
-          title="Example"
-          description={
-            <>
-              <p>Use the <code>&#x3C;Toast&#x3E;</code> component to show messages and notifications to the user. The component is split into two main subcomponents: <code>&#x3C;Toast.Header&#x3E;</code> and <code>&#x3C;Toast.Body&#x3E;</code> where you can add the text that you want.</p>
-              <p>You can also use the <code>handleClose</code> function to handle the event of closing the component.</p>
-            </>
-          }
-          scope={{ Card, Toast, Button, useState, FontAwesomeIcon, faBootstrap, showDefault, setShowDefault, handleCloseDefault }}
-          imports={`import React, { useState } from 'react';
-import { Card, Toast, Button } from '@themesberg/react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBootstrap } from '@fortawesome/free-brands-svg-icons';
+          </div>
+          <div>
+          <Row>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Joker Type</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Players</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Bet Value</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Action</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            </Row>
+          </div>
+          <div>
+            <Row>
+            <Col md={1} className="mb-3" style={{marginLeft:"1000px"}} >
+           <button class="btn btn-info" >Submit</button>
+              </Col>
+              <Col md={1} className="mb-3">
+           <button class="btn btn-danger" >Cancel</button>
+              </Col>
+            </Row>
 
-const [showDefault, setShowDefault] = useState(true);
-const toggleDefaultToast = () => setShowDefault(!showDefault);`}
-          example={`<Toast show={showDefault} onClose={handleCloseDefault} className="my-3">
-    <Toast.Header className="text-primary" closeButton={false}>
-        <FontAwesomeIcon icon={faBootstrap} />
-        <strong className="me-auto ms-2">Volt</strong>
-        <small>11 mins ago</small>
-        <Button variant="close" size="xs" onClick={handleCloseDefault} />
-    </Toast.Header>
-    <Toast.Body>
-        Hello, world! This is a toast message.
-    </Toast.Body>
-</Toast>`}
-        />
+          </div>
+          <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div className="d-block mb-4 mb-md-0">
+          <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
+            <Breadcrumb.Item><FontAwesomeIcon icon={faHome} /></Breadcrumb.Item>
+            <Breadcrumb.Item>Cash Deal Rummy List</Breadcrumb.Item>
+          
+          </Breadcrumb>
+          {/* <h4>Sub Admin</h4>
+          <p className="mb-0">Sub Admin Details .</p> */}
+        </div>
+      
+      </div>
+        
+        <div class="container">
 
-        <Documentation
-          title="Colors"
-          description={
-            <p>If you'd like to customize the appearance of the <code>&#x3C;Toast&#x3E;</code> component, you can easily do so by adding a <code>bg-primary</code>, <code>bg-secondary</code>, and any other <code>bg-*</code> modifier class to the main <code>&#x3C;Toast&#x3E;</code> component.</p>
-          }
-          scope={{ Toast, Button, useState, FontAwesomeIcon, faBootstrap, showPrimary, setShowPrimary, handleClosePrimary, showTertiary, setShowTertiary, handleCloseTertiary }}
-          imports={`import React, { useState } from 'react';
-import { Toast, Button } from '@themesberg/react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBootstrap } from '@fortawesome/free-brands-svg-icons';
 
-const [showPrimary, setShowPrimary] = useState(true);
-const [showTertiary, setShowTertiary] = useState(true);
 
-const handleClosePrimary = () => setShowPrimary(false);
-const handleCloseTertiary = () => setShowTertiary(false);`}
-          example={`<React.Fragment>
-  <Toast show={showPrimary} onClose={handleClosePrimary} className="bg-primary text-white my-3">
-      <Toast.Header className="text-primary" closeButton={false}>
-          <FontAwesomeIcon icon={faBootstrap} />
-          <strong className="me-auto ms-2">Themesberg</strong>
-          <small>11 mins ago</small>
-          <Button variant="close" size="xs" onClick={handleClosePrimary} />
-      </Toast.Header>
-      <Toast.Body>
-          Hello, world! This is a toast message.
-      </Toast.Body>
-  </Toast>
+<div class="row">
+  <div class="col-md">
 
-  <Toast show={showTertiary} onClose={handleCloseTertiary} className="bg-secondary text-white my-3">
-      <Toast.Header className="text-primary" closeButton={false}>
-          <FontAwesomeIcon icon={faBootstrap} />
-          <strong className="me-auto ms-2">Themesberg</strong>
-          <small>11 mins ago</small>
-          <Button variant="close" size="xs" onClick={handleCloseTertiary} />
-      </Toast.Header>
-      <Toast.Body>
-          Hello, world! This is a toast message.
-      </Toast.Body>
-  </Toast>
-</React.Fragment>`}
-        />
+             <div style={{display:"flex"}}>
+    <div style={{width:"70%"}}><h4><b></b></h4></div>
+    <div style={{marginTop:"5px"}}>
+    
+        
+       
+        </div>
+    
+   
+    
 
-      </Container>
-    </article>
-  );
-};
+</div>
+
+        <div style={{overflowX:"scroll",overflowY:"scroll"}}>
+        
+          
+       
+       
+        <table className="table">
+          <thead className="thead-light">
+            <tr>
+           
+           
+              <th style={{border:"1px double black",width:"150px" ,backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Live</th>
+
+              <th style={{border:"1px double black",width:"150px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Table Name</th>
+             
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Joker Type</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Point Value</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Min Entry</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Status</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Player</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Action</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Delete</th>
+              
+              
+              
+           
+            </tr>
+            
+          </thead>
+          <tbody>
+            { this.customerList() }
+          </tbody>
+         
+        </table>
+        </div>
+        </div>
+        </div>
+        </div>
+        
+      </div>
+    )
+  }
+}

@@ -1,102 +1,386 @@
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-import React, { useEffect, useState } from 'react';
-import { Nav, Row, Col, Card, Image, Navbar, Container } from '@themesberg/react-bootstrap';
-
-import Documentation from "../../components/Documentation";
-import ReactLogoPrimary from "../../assets/img/technologies/react-logo-primary.svg";
-import ReactLogoTransparent from "../../assets/img/technologies/react-logo-transparent.svg";
+import {  faCog, faHome, faSearch,faTrashAlt,faPlus,faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from '@themesberg/react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-export default () => {
-  return (
-    <article>
-      <Container className="px-0">
-        <Row className="d-flex flex-wrap flex-md-nowrap align-items-center py-4">
-          <Col className="d-block mb-4 mb-md-0">
-            <h1 className="h2">Navbars</h1>
-            <p className="mb-0">
-              Use the responsive navigation bar from Volt to add nav items and multi-level nested dropdowns for a seamless navigation.
-          </p>
+
+export default class buttons extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.deleteCustomer = this.deleteCustomer.bind(this)
+    this.onChangename = this.onChangename.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.state = {
+      name:'',
+      customers: []
+    };
+  }
+  
+
+  componentDidMount() {
+   
+      axios.post('https://acabnodejs.herokuapp.com/subadmin/')
+    .then(response => {
+      
+      this.setState({ customers: response.data})
+      
+      let result=response.data
+      this.setState({customers:
+        result.map(e => {
+          return{
+            select : false,
+            id : e._id,
+            name : e.name,
+          
+            email:e.email,
+            profilepicture:e.profilepicture,
+            role:e.role
+          
+
+          }
+        })
+
+    })
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    
+  }
+  deleteCustomerByIds = () => {
+  const arrayids = [];
+    this.state.customers.forEach(d => {
+      if(d.select) { 
+        arrayids.push(d.id);
+      }
+    });
+   
+    axios.post('https://acabnodejs.herokuapp.com/subadmin/delete',{arrayids:arrayids})
+   
+    .then(response=>{
+      if(response.data.message==="Deleted Successfully")
+      {
+        window.location.reload(true)
+      }
+ 
+    })
+  
+    ;
+    
+  };
+  onChangename(e) {
+    this.setState({
+      name: e.target.value
+    })
+  }
+  onSubmit(e) {
+    e.preventDefault();
+
+    const customer = {
+      name: this.state.name
+    }
+    axios.post('https://acabnodejs.herokuapp.com/subadmin/search', customer)
+      .then(res => {
+        this.setState({ customers: res.data })
+      })
+      .catch((error) => {
+             console.log(error);
+           })
+      
+  }
+  deleteCustomer(id) {
+    axios.delete('https://acabnodejs.herokuapp.com/subadmin/'+id)
+      .then(response => { 
+        console.log(response)
+        window.location.reload(true)
+
+      });
+
+    this.setState({
+      customers: this.state.customers.filter(el => el._id !== id)
+    })
+  }
+  
+  customerList() {
+    this.state.customers.sort(function(a,b){
+      if(a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+      if(a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+      return 0;
+     })
+
+    return this.state.customers.map(currentcustomer => (
+      <tr>
+        {/* <td  style={{border:"1px double black",textAlign:"center"}}>
+        <input type="checkbox" onChange={e => {
+                                let value = e.target.checked
+                                console.log(this.state)
+                                this.state.customers.find(o => o.id=== currentcustomer.id).select = value
+                                this.setState(this.state);
+                            }} />
+      </td> */}
+      {/* <td style={{border:"1px double black",textAlign:"center"}}><Link to={"/components/forms/"+currentcustomer.id}>{currentcustomer.name}</Link></td>
+      
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.email}</td>
+      
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.profilepicture}</td>
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.role}</td>
+      <td style={{border:"1px double black",textAlign:"center"}}>
+       <a  onClick={() => { this.deleteCustomer(currentcustomer.id) }}><FontAwesomeIcon icon={faTrash} /></a>
+    </td> */}
+      
+      
+      
+    
+    </tr>
+     
+    ))
+    
+  }
+  
+  
+ 
+
+
+
+  render()
+ {
+
+  
+    return (
+      
+      
+      <div style={{marginTop:"50px"}}>
+        
+        <div className="table-settings mb-4">
+        <Row className="justify-content-between align-items-center">
+          <Col xs={8} md={6} lg={3} xl={4}>
+            <Form onSubmit={this.onSubmit}>
+            <InputGroup style={{width:"100%"}} >
+              <InputGroup.Text>
+                <FontAwesomeIcon icon={faSearch} />
+              </InputGroup.Text>
+              <Form.Control type="text" placeholder="Search" value={this.state.name} onChange={this.onChangename} />
+            </InputGroup>
+            </Form>
           </Col>
-        </Row>
+          
+         
+          </Row>
+         
 
-        <Documentation
-          title="Navbar"
-          description=""
-          scope={{ Nav, Card, Navbar, Container, ReactLogo: ReactLogoTransparent, Image }}
-          imports={`import { Nav, Card, Navbar, Container } from '@themesberg/react-bootstrap';
+          </div>
+          <div>
+          <Row>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Joker Type</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Players</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Bet Value</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Action</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            </Row>
+          </div>
+          <div>
+            <Row>
+            <Col md={1} className="mb-3" style={{marginLeft:"1000px"}} >
+           <button class="btn btn-info" >Submit</button>
+              </Col>
+              <Col md={1} className="mb-3">
+           <button class="btn btn-danger" >Cancel</button>
+              </Col>
+            </Row>
 
-import ReactLogo from "src/assets/img/technologies/react-logo-transparent.svg";`}
-          example={`<Navbar variant="dark" expand="lg" bg="dark" className="navbar-transparent navbar-theme-primary my-2">
-  <Container className="position-relative">
-    <Navbar.Brand href="#home" className="me-lg-3">
-      <Image src={ReactLogo} />
-    </Navbar.Brand>
+          </div>
+          <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div className="d-block mb-4 mb-md-0">
+          <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
+            <Breadcrumb.Item><FontAwesomeIcon icon={faHome} /></Breadcrumb.Item>
+            <Breadcrumb.Item>Cash Papplu Rummy List</Breadcrumb.Item>
+          
+          </Breadcrumb>
+          {/* <h4>Sub Admin</h4>
+          <p className="mb-0">Sub Admin Details .</p> */}
+        </div>
+      
+      </div>
+        <div class="container">
 
-    <Navbar.Collapse id="navbar-default-primary" className="w-100">
-      <Nav className="navbar-nav-hover align-items-lg-center">
-        <Nav.Link href="#home">Home</Nav.Link>
-        <Nav.Link href="#about">About</Nav.Link>
-        <Nav.Link href="#contact">Contact</Nav.Link>
-      </Nav>
-    </Navbar.Collapse>
 
-    <Navbar.Toggle aria-controls="navbar-default-primary" />
-  </Container>
-</Navbar>`}
-        />
 
-        <Documentation
-          title="Navbar colors"
-          description=""
-          scope={{ useEffect, useState, Nav, Card, Navbar, Image, Container, ReactLogoPrimary, ReactLogo: ReactLogoTransparent }}
-          imports={`import React, { useEffect, useState } from "react";
-import { Nav, Card, Navbar, Container } from '@themesberg/react-bootstrap';
-import ReactLogo from "src/assets/img/technologies/react-logo-transparent.svg";
-import ReactLogoPrimary from "src/assets/img/technologies/react-logo-primary.svg";`}
-          example={`const NavbarThemes = [
-  { themeVariant: 'primary', navbarColor: 'dark', brandIcon: ReactLogo },
-  { themeVariant: 'secondary', navbarColor: 'light', brandIcon: ReactLogoPrimary },
-  { themeVariant: 'soft', navbarColor: 'light', brandIcon: ReactLogo }
-];
+<div class="row">
+  <div class="col-md">
 
-function NavbarChangingColors() {
-  const [themeIndex, setThemeIndex] = React.useState(0);
-  const { themeVariant, navbarColor, brandIcon } = NavbarThemes[themeIndex];
+             <div style={{display:"flex"}}>
+    <div style={{width:"70%"}}><h4><b></b></h4></div>
+    <div style={{marginTop:"5px"}}>
+    
+        
+       
+        </div>
+    
+   
+    
 
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      const nextIndex = themeIndex === NavbarThemes.length - 1 ? 0 : themeIndex + 1;
-      setThemeIndex(nextIndex);
-    }, 1000);
+</div>
 
-    return () => clearTimeout(timer);
-  });
+        <div style={{overflowX:"scroll",overflowY:"scroll"}}>
+        
+          
+       
+       
+        <table className="table">
+          <thead className="thead-light">
+            <tr>
+           
+           
+              <th style={{border:"1px double black",width:"150px" ,backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>#</th>
 
-  return (
-    <Navbar variant={navbarColor} expand="lg" className={\`navbar-transparent navbar-theme-\${themeVariant} my-2\`}>
-      <Container className="position-relative">
-        <Navbar.Brand href="#home" className="me-lg-3">
-          <Image src={brandIcon} />
-        </Navbar.Brand>
-
-        <Navbar.Collapse id="navbar-default-primary" className="w-100">
-          <Nav className="navbar-nav-hover align-items-lg-center">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#about">About</Nav.Link>
-            <Nav.Link href="#contact">Contact</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-
-        <Navbar.Toggle aria-controls="navbar-default-primary" />
-      </Container>
-    </Navbar>
-  );
+              <th style={{border:"1px double black",width:"150px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Table Name</th>
+             
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Joker Type</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Point Value</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Min Entry</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Status</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Player</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Action</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Delete</th>
+              
+              
+              
+           
+            </tr>
+            
+          </thead>
+          <tbody>
+            { this.customerList() }
+          </tbody>
+         
+        </table>
+        </div>
+        </div>
+        </div>
+        </div>
+        
+      </div>
+    )
+  }
 }
-
-render( <NavbarChangingColors /> );`}
-        />
-      </Container>
-    </article>
-  );
-};

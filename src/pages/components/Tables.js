@@ -1,142 +1,387 @@
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
-import { Col, Row, Table, Image, Container } from '@themesberg/react-bootstrap';
-
-import Documentation from "../../components/Documentation";
-
-import USAFlag from "../../assets/img/flags/united-states-of-america.svg";
-import CanadaFlag from "../../assets/img/flags/canada.svg";
-import UKFlag from "../../assets/img/flags/united-kingdom.svg";
-import FranceFlag from "../../assets/img/flags/france.svg";
-import JapanFlag from "../../assets/img/flags/japan.svg";
-import GermanyFlag from "../../assets/img/flags/germany.svg";
+import {  faCog, faHome, faSearch,faTrashAlt,faPlus,faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from '@themesberg/react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-export default () => {
-  return (
-    <article>
-      <Container className="px-0">
-        <Row className="d-flex flex-wrap flex-md-nowrap align-items-center py-4">
-          <Col className="d-block mb-4 mb-md-0">
-            <h1 className="h2">Tables</h1>
-            <p className="mb-0">
-              Use tables to show more complex amount of data.
-            </p>
-          </Col>
-        </Row>
 
-        <Documentation
-          title="Example"
-          description={
-            <>
-              <p>The <code>&#x3C;Table&#x3E;</code> component can be used to show more complex amounts of data. We recommend you to use the local <code>&#x3C;TableRow&#x3E;</code> method and component to build rows for the table and set the columns and props from there.</p>
-              <p>In this example, the props from <code>&#x3C;TableRow&#x3E;</code>, such as the <code>country</code>, <code>countryIcon</code>, <code>value</code>, and <code>percentage</code> are being set as props. After that, the <code>&#x3C;TableRow&#x3E;</code> components are being added in the final <code>&#x3C;Table&#x3E;</code> rendering.</p>
-            </>
+export default class buttons extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.deleteCustomer = this.deleteCustomer.bind(this)
+    this.onChangename = this.onChangename.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.state = {
+      name:'',
+      customers: []
+    };
+  }
+  
+
+  componentDidMount() {
+   
+      axios.post('https://acabnodejs.herokuapp.com/subadmin/')
+    .then(response => {
+      
+      this.setState({ customers: response.data})
+      
+      let result=response.data
+      this.setState({customers:
+        result.map(e => {
+          return{
+            select : false,
+            id : e._id,
+            name : e.name,
+          
+            email:e.email,
+            profilepicture:e.profilepicture,
+            role:e.role
+          
+
           }
-          scope={{ Image, Table, FontAwesomeIcon, faAngleDown, faAngleUp, USAFlag, CanadaFlag, UKFlag, FranceFlag, JapanFlag, GermanyFlag }}
-          imports={`import { Image, Table } from '@themesberg/react-bootstrap';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
+        })
 
-import USAFlag from "src/assets/img/flags/united-states-of-america.svg";
-import CanadaFlag from "src/assets/img/flags/canada.svg";
-import UKFlag from "src/assets/img/flags/united-kingdom.svg";
-import FranceFlag from "src/assets/img/flags/france.svg";
-import JapanFlag from "src/assets/img/flags/japan.svg";
-import GermanyFlag from "src/assets/img/flags/germany.svg";`}
-          example={`<Table>
-  <thead className="thead-light">
-    <tr>
-      <th className="border-0">Country</th>
-      <th className="border-0">All</th>
-      <th className="border-0">All Change</th>
+    })
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    
+  }
+  deleteCustomerByIds = () => {
+  const arrayids = [];
+    this.state.customers.forEach(d => {
+      if(d.select) { 
+        arrayids.push(d.id);
+      }
+    });
+   
+    axios.post('https://acabnodejs.herokuapp.com/subadmin/delete',{arrayids:arrayids})
+   
+    .then(response=>{
+      if(response.data.message==="Deleted Successfully")
+      {
+        window.location.reload(true)
+      }
+ 
+    })
+  
+    ;
+    
+  };
+  onChangename(e) {
+    this.setState({
+      name: e.target.value
+    })
+  }
+  onSubmit(e) {
+    e.preventDefault();
+
+    const customer = {
+      name: this.state.name
+    }
+    axios.post('https://acabnodejs.herokuapp.com/subadmin/search', customer)
+      .then(res => {
+        this.setState({ customers: res.data })
+      })
+      .catch((error) => {
+             console.log(error);
+           })
+      
+  }
+  deleteCustomer(id) {
+    axios.delete('https://acabnodejs.herokuapp.com/subadmin/'+id)
+      .then(response => { 
+        console.log(response)
+        window.location.reload(true)
+
+      });
+
+    this.setState({
+      customers: this.state.customers.filter(el => el._id !== id)
+    })
+  }
+  
+  customerList() {
+    this.state.customers.sort(function(a,b){
+      if(a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+      if(a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+      return 0;
+     })
+
+    return this.state.customers.map(currentcustomer => (
+      <tr>
+        {/* <td  style={{border:"1px double black",textAlign:"center"}}>
+        <input type="checkbox" onChange={e => {
+                                let value = e.target.checked
+                                console.log(this.state)
+                                this.state.customers.find(o => o.id=== currentcustomer.id).select = value
+                                this.setState(this.state);
+                            }} />
+      </td> */}
+      {/* <td style={{border:"1px double black",textAlign:"center"}}><Link to={"/components/forms/"+currentcustomer.id}>{currentcustomer.name}</Link></td>
+      
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.email}</td>
+      
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.profilepicture}</td>
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.role}</td>
+      <td style={{border:"1px double black",textAlign:"center"}}>
+       <a  onClick={() => { this.deleteCustomer(currentcustomer.id) }}><FontAwesomeIcon icon={faTrash} /></a>
+    </td> */}
+      
+      
+      
+    
     </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td className="border-0">
-        <a href="#Unites States" className="d-flex align-items-center">
-          <Image roundedCircle src={USAFlag} className="me-2 image image-small" alt="Unites States" />
-          <div><span className="h6">Unites States</span></div>
-        </a>
-      </td>
-      <td className="border-0 fw-bold">106</td>
-      <td className="border-0 text-danger">
-        <FontAwesomeIcon icon={faAngleDown} className="me-1" />
-        <span className="fw-bold">5</span>
-      </td>
-    </tr>
-    <tr>
-      <td className="border-0">
-        <a href="#Canada" className="d-flex align-items-center">
-          <Image roundedCircle src={CanadaFlag} className="me-2 image image-small" alt="Canada" />
-          <div><span className="h6">Canada</span></div>
-        </a>
-      </td>
-      <td className="border-0 fw-bold">76</td>
-      <td className="border-0 text-success">
-        <FontAwesomeIcon icon={faAngleUp} className="me-1" />
-        <span className="fw-bold">17</span>
-      </td>
-    </tr>
-    <tr>
-      <td className="border-0">
-        <a href="#United Kingdom" className="d-flex align-items-center">
-          <Image roundedCircle src={UKFlag} className="me-2 image image-small" alt="United Kingdom" />
-          <div><span className="h6">United Kingdom</span></div>
-        </a>
-      </td>
-      <td className="border-0 fw-bold">147</td>
-      <td className="border-0 text-success">
-        <FontAwesomeIcon icon={faAngleUp} className="me-1" />
-        <span className="fw-bold">10</span>
-      </td>
-    </tr>
-    <tr>
-      <td className="border-0">
-        <a href="#France" className="d-flex align-items-center">
-          <Image roundedCircle src={FranceFlag} className="me-2 image image-small" alt="France" />
-          <div><span className="h6">France</span></div>
-        </a>
-      </td>
-      <td className="border-0 fw-bold">112</td>
-      <td className="border-0 text-success">
-        <FontAwesomeIcon icon={faAngleUp} className="me-1" />
-        <span className="fw-bold">3</span>
-      </td>
-    </tr>
-    <tr>
-      <td className="border-0">
-        <a href="#Japan" className="d-flex align-items-center">
-          <Image roundedCircle src={JapanFlag} className="me-2 image image-small" alt="Japan" />
-          <div><span className="h6">Japan</span></div>
-        </a>
-      </td>
-      <td className="border-0 fw-bold">115</td>
-      <td className="border-0 text-danger">
-        <FontAwesomeIcon icon={faAngleDown} className="me-1" />
-        <span className="fw-bold">12</span>
-      </td>
-    </tr>
-    <tr>
-      <td className="border-0">
-        <a href="#Germany" className="d-flex align-items-center">
-          <Image roundedCircle src={GermanyFlag} className="me-2 image image-small" alt="Germany" />
-          <div><span className="h6">Germany</span></div>
-        </a>
-      </td>
-      <td className="border-0 fw-bold">220</td>
-      <td className="border-0 text-danger">
-        <FontAwesomeIcon icon={faAngleDown} className="me-1" />
-        <span className="fw-bold">56</span>
-      </td>
-    </tr>
-  </tbody>
-</Table>`}
-        />
-      </Container>
-    </article>
-  );
-};
+     
+    ))
+    
+  }
+  
+  
+ 
+
+
+
+  render()
+ {
+
+  
+    return (
+      
+      
+      <div style={{marginTop:"50px"}}>
+     
+      <div className="table-settings mb-4">
+        <Row className="justify-content-between align-items-center">
+          <Col xs={8} md={6} lg={3} xl={4}>
+            <Form onSubmit={this.onSubmit}>
+            <InputGroup style={{width:"100%"}} >
+              <InputGroup.Text>
+                <FontAwesomeIcon icon={faSearch} />
+              </InputGroup.Text>
+              <Form.Control type="text" placeholder="Search" value={this.state.name} onChange={this.onChangename} />
+            </InputGroup>
+            </Form>
+          </Col>
+          
+         
+          </Row>
+         
+
+          </div>
+          <div>
+          <Row>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Joker Type</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Players</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Bet Value</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Action</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            </Row>
+          </div>
+          <div>
+            <Row>
+            <Col md={1} className="mb-3" style={{marginLeft:"1000px"}} >
+           <button class="btn btn-info" >Submit</button>
+              </Col>
+              <Col md={1} className="mb-3">
+           <button class="btn btn-danger" >Cancel</button>
+              </Col>
+            </Row>
+
+          </div>
+          <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div className="d-block mb-4 mb-md-0">
+          <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
+            <Breadcrumb.Item><FontAwesomeIcon icon={faHome} /></Breadcrumb.Item>
+            <Breadcrumb.Item>Cash Ponit Rummy List</Breadcrumb.Item>
+          
+          </Breadcrumb>
+          {/* <h4>Sub Admin</h4>
+          <p className="mb-0">Sub Admin Details .</p> */}
+        </div>
+      
+      </div>
+        
+        <div class="container">
+
+
+
+<div class="row">
+  <div class="col-md">
+
+             <div style={{display:"flex"}}>
+    <div style={{width:"70%"}}><h4><b></b></h4></div>
+    <div style={{marginTop:"5px"}}>
+    
+        
+       
+        </div>
+    
+   
+    
+
+</div>
+
+        <div style={{overflowX:"scroll",overflowY:"scroll"}}>
+        
+          
+       
+       
+        <table className="table">
+          <thead className="thead-light">
+            <tr>
+           
+           
+              <th style={{border:"1px double black",width:"150px" ,backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Sl No</th>
+
+              <th style={{border:"1px double black",width:"150px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Table Name</th>
+             
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Joker Type</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Point Value</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Min Entry</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Status</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Player</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Action</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Delete</th>
+              
+              
+              
+           
+            </tr>
+            
+          </thead>
+          <tbody>
+            { this.customerList() }
+          </tbody>
+         
+        </table>
+        </div>
+        </div>
+        </div>
+        </div>
+        
+      </div>
+    )
+  }
+}

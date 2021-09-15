@@ -101,10 +101,11 @@ export default (props = {}) => {
               <NavItem title="User Details" link={Routes.Alerts.path} icon={faUserTie} />
               <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Real Money Tables</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
               
-                <NavItem title="Point Rummy "  />
-                <NavItem title="pool Rummy  "  />
-                <NavItem title="Deal Rummy "  />
-                <NavItem title="Papplu Rummy "  />
+                <NavItem title="Point Rummy " link={Routes.Buttons.path}  />
+                <NavItem title="pool Rummy  "link={Routes.Forms.path}  />
+                <NavItem title="Deal Rummy " link={Routes.Modals.path}  />
+                
+                <NavItem title="Papplu Rummy "  link={Routes.Navbars.path} />
                 
                 
               </NavDropdown>

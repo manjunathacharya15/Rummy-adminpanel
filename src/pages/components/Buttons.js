@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-import {  faCog, faHome, faSearch,faPlus,faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import {  faCog, faHome, faSearch,faTrashAlt,faPlus,faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from '@themesberg/react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -25,7 +25,7 @@ export default class buttons extends Component {
 
   componentDidMount() {
    
-      axios.post('https://carrombackend.herokuapp.com/users/')
+      axios.post('https://acabnodejs.herokuapp.com/subadmin/')
     .then(response => {
       
       this.setState({ customers: response.data})
@@ -39,14 +39,14 @@ export default class buttons extends Component {
             name : e.name,
           
             email:e.email,
-            phonenumber:e.phonenumber,
-            gender:e.gender
+            profilepicture:e.profilepicture,
+            role:e.role
+          
 
           }
         })
-        
+
     })
-   
     })
     .catch((error) => {
       console.log(error);
@@ -61,7 +61,7 @@ export default class buttons extends Component {
       }
     });
    
-    axios.post('https://carrombackend.herokuapp.com/users/delete',{arrayids:arrayids})
+    axios.post('https://acabnodejs.herokuapp.com/subadmin/delete',{arrayids:arrayids})
    
     .then(response=>{
       if(response.data.message==="Deleted Successfully")
@@ -85,7 +85,7 @@ export default class buttons extends Component {
     const customer = {
       name: this.state.name
     }
-    axios.post('https://carrombackend.herokuapp.com/users/search', customer)
+    axios.post('https://acabnodejs.herokuapp.com/subadmin/search', customer)
       .then(res => {
         this.setState({ customers: res.data })
       })
@@ -95,8 +95,12 @@ export default class buttons extends Component {
       
   }
   deleteCustomer(id) {
-    axios.delete('https://mitnessnew.herokuapp.com/customers/'+id)
-      .then(response => { console.log(response.data)});
+    axios.delete('https://acabnodejs.herokuapp.com/subadmin/'+id)
+      .then(response => { 
+        console.log(response)
+        window.location.reload(true)
+
+      });
 
     this.setState({
       customers: this.state.customers.filter(el => el._id !== id)
@@ -112,21 +116,25 @@ export default class buttons extends Component {
 
     return this.state.customers.map(currentcustomer => (
       <tr>
-        <td  style={{border:"1px double black",textAlign:"center"}}>
+        {/* <td  style={{border:"1px double black",textAlign:"center"}}>
         <input type="checkbox" onChange={e => {
                                 let value = e.target.checked
                                 console.log(this.state)
                                 this.state.customers.find(o => o.id=== currentcustomer.id).select = value
                                 this.setState(this.state);
                             }} />
-      </td>
-      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.name}</td>
+      </td> */}
+      {/* <td style={{border:"1px double black",textAlign:"center"}}><Link to={"/components/forms/"+currentcustomer.id}>{currentcustomer.name}</Link></td>
       
       <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.email}</td>
       
-      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.gender}</td>
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.profilepicture}</td>
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.role}</td>
+      <td style={{border:"1px double black",textAlign:"center"}}>
+       <a  onClick={() => { this.deleteCustomer(currentcustomer.id) }}><FontAwesomeIcon icon={faTrash} /></a>
+    </td> */}
       
-      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.phonenumber}</td>
+      
       
     
     </tr>
@@ -148,23 +156,12 @@ export default class buttons extends Component {
       
       
       <div style={{marginTop:"50px"}}>
-        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-        <div className="d-block mb-4 mb-md-0">
-          <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
-            <Breadcrumb.Item><FontAwesomeIcon icon={faHome} /></Breadcrumb.Item>
-            <Breadcrumb.Item>User Details</Breadcrumb.Item>
-          
-          </Breadcrumb>
-          <h4>User Details</h4>
-          <p className="mb-0">User information .</p>
-        </div>
-      
-      </div>
+     
       <div className="table-settings mb-4">
         <Row className="justify-content-between align-items-center">
           <Col xs={8} md={6} lg={3} xl={4}>
             <Form onSubmit={this.onSubmit}>
-            <InputGroup>
+            <InputGroup style={{width:"100%"}} >
               <InputGroup.Text>
                 <FontAwesomeIcon icon={faSearch} />
               </InputGroup.Text>
@@ -172,19 +169,32 @@ export default class buttons extends Component {
             </InputGroup>
             </Form>
           </Col>
-          <Col xs={4} md={2} xl={1} className="ps-md-0 text-end" style={{marginRight:"200px"}}>
-            <Dropdown as={ButtonGroup} >
-              <Dropdown.Toggle split as={Button} variant="link" className="text-dark m-0 p-0">
-                <span className="icon icon-sm icon-gray" style={{marginRight:"15px"}}>
-                  <b>Actions</b>
+          
+         
+          </Row>
+         
+
+          </div>
+          <div>
+          <Row>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Joker Type</b>
                   
                 </span>
-                <FontAwesomeIcon icon={faCog} />
-              </Dropdown.Toggle>
-              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right">
+                  
               
-                <Dropdown.Item className="d-flex fw-bold">
-                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Adduser <FontAwesomeIcon icon={faPlus}  /></span></Link>
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
                 </Dropdown.Item>
                 <Dropdown.Item className="fw-bold" >
                 <span style={{marginRight:"10px"}}    onClick={() => {
@@ -194,9 +204,124 @@ export default class buttons extends Component {
                
               </Dropdown.Menu>
             </Dropdown>
-          </Col>
-          </Row>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Players</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Bet Value</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Action</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            </Row>
           </div>
+          <div>
+            <Row>
+            <Col md={1} className="mb-3" style={{marginLeft:"1000px"}} >
+           <button class="btn btn-info" >Submit</button>
+              </Col>
+              <Col md={1} className="mb-3">
+           <button class="btn btn-danger" >Cancel</button>
+              </Col>
+            </Row>
+
+          </div>
+          <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div className="d-block mb-4 mb-md-0">
+          <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
+            <Breadcrumb.Item><FontAwesomeIcon icon={faHome} /></Breadcrumb.Item>
+            <Breadcrumb.Item>Cash Ponit Rummy List</Breadcrumb.Item>
+          
+          </Breadcrumb>
+          {/* <h4>Sub Admin</h4>
+          <p className="mb-0">Sub Admin Details .</p> */}
+        </div>
+      
+      </div>
         
         <div class="container">
 
@@ -227,15 +352,20 @@ export default class buttons extends Component {
           <thead className="thead-light">
             <tr>
            
-            <th style={{border:"1px double  black",width:"100px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Delete</th>
-              <th style={{border:"1px double black",width:"150px" ,backgroundColor:"00ADB5",color:"black",textAlign:"center"}}> Name</th>
+           
+              <th style={{border:"1px double black",width:"150px" ,backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Sl No</th>
 
-              <th style={{border:"1px double black",width:"150px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Email</th>
+              <th style={{border:"1px double black",width:"150px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Table Name</th>
              
-              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Gender</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Joker Type</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Point Value</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Min Entry</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Status</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Player</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Action</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Delete</th>
               
               
-              <th style={{border:"1px double black",width:"70px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Phone Number</th>
               
            
             </tr>

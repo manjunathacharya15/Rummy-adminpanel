@@ -1,261 +1,388 @@
-import React from 'react';
-import moment from "moment-timezone";
-import Datetime from "react-datetime";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+import {  faCog, faHome, faSearch,faTrashAlt,faPlus,faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from '@themesberg/react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
-import { Col, Row, Card, Form, Container, InputGroup } from '@themesberg/react-bootstrap';
 
-import Documentation from "../../components/Documentation";
 
-export default () => {
-  return (
-    <article>
-      <Container className="px-0">
-        <Row className="d-flex flex-wrap flex-md-nowrap align-items-center py-4">
-          <Col className="d-block mb-4 mb-md-0">
-            <h1 className="h2">Forms</h1>
-            <p className="mb-0">
-              Use form elements such as text inputs, textareas, file uploads and many more to get input from you users.
-            </p>
-          </Col>
-        </Row>
 
-        <Documentation
-          title="Example"
-          description={
-            <p>Form elements are an important part of the UI to receive text input from the users. The <code>&#x3C;Form&#x3E;</code> component can be used to create forms, form groups, labels, and input elements inside the UI. Check out the following example for a simple email input field and a textarea field:</p>
+export default class buttons extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.deleteCustomer = this.deleteCustomer.bind(this)
+    this.onChangename = this.onChangename.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.state = {
+      name:'',
+      customers: []
+    };
+  }
+  
+
+  componentDidMount() {
+   
+      axios.post('https://acabnodejs.herokuapp.com/subadmin/')
+    .then(response => {
+      
+      this.setState({ customers: response.data})
+      
+      let result=response.data
+      this.setState({customers:
+        result.map(e => {
+          return{
+            select : false,
+            id : e._id,
+            name : e.name,
+          
+            email:e.email,
+            profilepicture:e.profilepicture,
+            role:e.role
+          
+
           }
-          scope={{ Form }}
-          imports={`import { Form } from '@themesberg/react-bootstrap';`}
-          example={`<Form>
-  <Form.Group className="mb-3">
-    <Form.Label>Email address</Form.Label>
-    <Form.Control type="email" placeholder="name@example.com" />
-  </Form.Group>
-  <Form.Group className="mb-3">
-    <Form.Label>Example textarea</Form.Label>
-    <Form.Control as="textarea" rows="3" />
-  </Form.Group>
-</Form>`}
-        />
+        })
 
-        <Documentation
-          title="Input fields with icon"
-          description={
-            <p>You can also add icons to the left or right side of the input field by using the <code>&#x3C;InputGroup&#x3E;</code> component and using the <code>&#x3C;InputGroup.Text&#x3E;</code> element with an icon element inside it, either after or before the <code>&#x3C;Form.Control&#x3E;</code> element.</p>
-          }
-          scope={{ Form, InputGroup, FontAwesomeIcon, faSearch }}
-          imports={`import { Form, InputGroup } from '@themesberg/react-bootstrap';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";`}
-          example={`<Form>
-  <Form.Group className="mb-3">
-    <Form.Label>Icon Left</Form.Label>
-    <InputGroup>
-      <InputGroup.Text><FontAwesomeIcon icon={faSearch} /></InputGroup.Text>
-      <Form.Control type="text" placeholder="Search" />
-    </InputGroup>
-  </Form.Group>
-  <Form.Group className="mb-3">
-    <Form.Label>Icon Right</Form.Label>
-    <InputGroup>
-      <Form.Control type="text" placeholder="Search" />
-      <InputGroup.Text><FontAwesomeIcon icon={faSearch} /></InputGroup.Text>
-    </InputGroup>
-  </Form.Group>
-</Form>`}
-        />
+    })
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    
+  }
+  deleteCustomerByIds = () => {
+  const arrayids = [];
+    this.state.customers.forEach(d => {
+      if(d.select) { 
+        arrayids.push(d.id);
+      }
+    });
+   
+    axios.post('https://acabnodejs.herokuapp.com/subadmin/delete',{arrayids:arrayids})
+   
+    .then(response=>{
+      if(response.data.message==="Deleted Successfully")
+      {
+        window.location.reload(true)
+      }
+ 
+    })
+  
+    ;
+    
+  };
+  onChangename(e) {
+    this.setState({
+      name: e.target.value
+    })
+  }
+  onSubmit(e) {
+    e.preventDefault();
 
-        <Documentation
-          title="Validation"
-          description={
-            <p>You can easily update the styles of a valid or invalid styles input field by using the <code>isValid</code> or <code>isInvalid</code> attributes. Additionally, you can use the <code>&#x3C;Form.Control.Feedback&#x3E;</code> component to write the message regarding the success or error message.</p>
-          }
-          scope={{ Form }}
-          imports={`import { Form } from '@themesberg/react-bootstrap';`}
-          example={`<Form>
-  <Form.Group className="mb-3">
-    <Form.Label>Username</Form.Label>
-    <Form.Control required isInvalid type="text" />
-    <Form.Control.Feedback type="invalid">Please choose a username.</Form.Control.Feedback>
-  </Form.Group>
-  <Form.Group className="mb-3">
-    <Form.Label>First name</Form.Label>
-    <Form.Control required isValid type="text" defaultValue="Mark" />
-    <Form.Control.Feedback type="valid">Looks good!</Form.Control.Feedback>
-  </Form.Group>
-</Form>`}
-        />
+    const customer = {
+      name: this.state.name
+    }
+    axios.post('https://acabnodejs.herokuapp.com/subadmin/search', customer)
+      .then(res => {
+        this.setState({ customers: res.data })
+      })
+      .catch((error) => {
+             console.log(error);
+           })
+      
+  }
+  deleteCustomer(id) {
+    axios.delete('https://acabnodejs.herokuapp.com/subadmin/'+id)
+      .then(response => { 
+        console.log(response)
+        window.location.reload(true)
 
-        <Documentation
-          title="Select input"
-          description={
-            <p>The <code>&#x3C;Form.Select&#x3E;</code> component can be used for option selection from the user. You can use the <code>&#x3C;option&#x3E;</code> elements to add multiple options and use the <code>defaultValue</code> attribute to set the default value of the select field.</p>
-          }
-          scope={{ Form }}
-          imports={`import { Form } from '@themesberg/react-bootstrap';`}
-          example={`<Form>
-  <Form.Group className="mb-3">
-    <Form.Label>Example select</Form.Label>
-    <Form.Select>
-      <option defaultValue>Open this select menu</option>
-      <option>One</option>
-      <option>Two</option>
-      <option>Three</option>
-    </Form.Select>
-  </Form.Group>
-</Form>`}
-        />
+      });
 
-        <Documentation
-          title="Multiple select"
-          description=""
-          scope={{ Form }}
-          imports={`import { Form } from '@themesberg/react-bootstrap';`}
-          example={`<Form>
-  <Form.Group className="mb-3">
-    <Form.Label>Example multiple select</Form.Label>
-    <Form.Select multiple>
-      <option defaultValue>Open this select menu</option>
-      <option>One</option>
-      <option>Two</option>
-      <option>Three</option>
-    </Form.Select>
-  </Form.Group>
-</Form>`}
-        />
+    this.setState({
+      customers: this.state.customers.filter(el => el._id !== id)
+    })
+  }
+  
+  customerList() {
+    this.state.customers.sort(function(a,b){
+      if(a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+      if(a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+      return 0;
+     })
 
-        <Documentation
-          title="Textarea"
-          description={
-            <p>You can create a textarea input field by adding the <code>as="textarea"</code> modifier attribute to the <code>&#x3C;Form.Control&#x3E;</code> component.</p>
-          }
-          scope={{ Form }}
-          imports={`import { Form } from '@themesberg/react-bootstrap';`}
-          example={`<Form>
-  <Form.Group>
-    <Form.Label>Example textarea</Form.Label>
-    <Form.Control as="textarea" rows="4" placeholder="Enter your message..." />
-  </Form.Group>
-</Form>`}
-        />
+    return this.state.customers.map(currentcustomer => (
+      <tr>
+        {/* <td  style={{border:"1px double black",textAlign:"center"}}>
+        <input type="checkbox" onChange={e => {
+                                let value = e.target.checked
+                                console.log(this.state)
+                                this.state.customers.find(o => o.id=== currentcustomer.id).select = value
+                                this.setState(this.state);
+                            }} />
+      </td> */}
+      {/* <td style={{border:"1px double black",textAlign:"center"}}><Link to={"/components/forms/"+currentcustomer.id}>{currentcustomer.name}</Link></td>
+      
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.email}</td>
+      
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.profilepicture}</td>
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.role}</td>
+      <td style={{border:"1px double black",textAlign:"center"}}>
+       <a  onClick={() => { this.deleteCustomer(currentcustomer.id) }}><FontAwesomeIcon icon={faTrash} /></a>
+    </td> */}
+      
+      
+      
+    
+    </tr>
+     
+    ))
+    
+  }
+  
+  
+ 
 
-        <Documentation
-          title="File upload"
-          description={
-            <p>If you want to use an input field to upload files, you need to add the <code>type="file"</code> attribute to the <code>&#x3C;Form.Control&#x3E;</code> component.</p>
-          }
-          scope={{ Form }}
-          imports={`import { Form } from '@themesberg/react-bootstrap';`}
-          example={`<Form>
-  <Form.Control type="file" />
-</Form>`}
-        />
 
-        <Documentation
-          title="Checkboxes"
-          description={
-            <>
-              <p>Use the <code>&#x3C;Form.Check&#x3E;</code> component to create checkbox items. If you want to disable on them, you need to add the <code>disabled</code> attribute.</p>
-              <p>Make sure the is a <code>{'id="*"'}</code> and <code>{'htmlFor="*"'}</code> attribute for each element so that clicking on the text will also toggle the element.</p>
-            </>
-          }
-          scope={{ Form }}
-          imports={`import { Form } from '@themesberg/react-bootstrap';`}
-          example={`<Form>
-  <Form.Check label="Default checkbox" id="checkbox1" htmlFor="checkbox1" />
-  <Form.Check disabled label="Disabled checkbox" id="checkbox2" htmlFor="checkbox2" />
-</Form>`}
-        />
 
-        <Documentation
-          title="Radio buttons"
-          description={
-            <>
-              <p>If you want to use radio buttons, you need to use the <code>&#x3C;Form.Check&#x3E;</code> component with the <code>type="radio"</code> modifier. You can disable the element by using the <code>disabled</code> attribute.</p>
-              <p>Make sure the is a <code>{'id="*"'}</code> and <code>{'htmlFor="*"'}</code> attribute for each element so that clicking on the text will also toggle the element.</p>
-            </>
-          }
-          scope={{ Form }}
-          imports={`import { Form } from '@themesberg/react-bootstrap';`}
-          example={`<Form>
-  <fieldset>
-    <Form.Check
-      defaultChecked
-      type="radio"
-      defaultValue="option1"
-      label="Default radio"
-      name="exampleRadios"
-      id="radio1"
-      htmlFor="radio1"
-      />
+  render()
+ {
 
-    <Form.Check
-      type="radio"
-      defaultValue="option2"
-      label="Second default radio"
-      name="exampleRadios"
-      id="radio2"
-      htmlFor="radio2"
-      />
+  
+    return (
+      
+      
+      <div style={{marginTop:"50px"}}>
+       
+      <div className="table-settings mb-4">
 
-    <Form.Check
-      disabled
-      type="radio"
-      defaultValue="option3"
-      label="Disabled radio"
-      name="exampleRadios"
-      id="radio3"
-      htmlFor="radio3"
-      />
-  </fieldset>
-</Form>`}
-        />
-
-        <Documentation
-          title="Datepicker"
-          description={
-            <p>Use the <code>&#x3C;Datetime&#x3E;</code> component to use a datepicker as an input field. You can read more about the options that you can use for this component by reading the <Card.Link href="https://www.npmjs.com/package/react-datetime" target="_blank">react-datetime</Card.Link> documentation.</p>
-          }
-          scope={{ Datetime, Form, InputGroup, FontAwesomeIcon, faCalendarAlt, moment }}
-          imports={`import React, { useState } from "react";
-import { Form, InputGroup } from '@themesberg/react-bootstrap';
-import Datetime from "react-datetime";
-import moment from "moment-timezone";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";`}
-          example={`const Datepicker = () => {
-  const [birthday, setBirthday] = React.useState("");
-
-  return(
-    <Form>
-      <Form.Group className="mb-3">
-        <Datetime
-          timeFormat={false}
-          closeOnSelect={false}
-          onChange={setBirthday}
-          renderInput={(props, openCalendar) => (
-            <InputGroup>
-              <InputGroup.Text><FontAwesomeIcon icon={faCalendarAlt} /></InputGroup.Text>
-              <Form.Control
-                required
-                type="text"
-                value={birthday ? moment(birthday).format("MM/DD/YYYY") : ""}
-                placeholder="mm/dd/yyyy"
-                onFocus={openCalendar}
-                onChange={() => { }} />
+        <Row className="justify-content-between align-items-center">
+          <Col xs={8} md={6} lg={3} xl={4}>
+            <Form onSubmit={this.onSubmit}>
+            <InputGroup style={{width:"100%"}} >
+              <InputGroup.Text>
+                <FontAwesomeIcon icon={faSearch} />
+              </InputGroup.Text>
+              <Form.Control type="text" placeholder="Search" value={this.state.name} onChange={this.onChangename} />
             </InputGroup>
-          )} />
-      </Form.Group>
-    </Form>
-  );
+            </Form>
+          </Col>
+          
+         
+          </Row>
+         
+
+          </div>
+          <div>
+          <Row>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Joker Type</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Players</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Bet Value</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            <Col md={3} className="mb-3">
+              <Form.Group id="firstName">
+              <Dropdown as={ButtonGroup} >
+              <Dropdown.Toggle split as={Button} variant="secondary" className="text-dark m-0 p-0">
+              <span className="icon icon-sm icon-grey" style={{marginRight:"15px"}}>
+                  <b>Action</b>
+                  
+                </span>
+                  
+              
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right"> 
+              
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
+                </Dropdown.Item> 
+                 <Dropdown.Item className="d-flex fw-bold">
+                <Link to="/components/accordions" className="nav-link">    <span className="icon icon-small ms-auto" style={{marginRight:"50px"}}>Add <FontAwesomeIcon icon={faPlus}  /></span></Link>
+                </Dropdown.Item>
+                <Dropdown.Item className="fw-bold" >
+                <span style={{marginRight:"10px"}}    onClick={() => {
+          this.deleteCustomerByIds();
+        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
+                </Dropdown.Item>
+               
+              </Dropdown.Menu>
+            </Dropdown>
+               
+              </Form.Group>
+            </Col>
+            </Row>
+          </div>
+          <div>
+            <Row>
+            <Col md={1} className="mb-3" style={{marginLeft:"1000px"}} >
+           <button class="btn btn-info" >Submit</button>
+              </Col>
+              <Col md={1} className="mb-3">
+           <button class="btn btn-danger" >Cancel</button>
+              </Col>
+            </Row>
+
+          </div>
+           <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div className="d-block mb-4 mb-md-0">
+          <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
+            <Breadcrumb.Item><FontAwesomeIcon icon={faHome} /></Breadcrumb.Item>
+            <Breadcrumb.Item>Cash Pool Rummy List</Breadcrumb.Item>
+          
+          </Breadcrumb>
+          {/* <h4>Sub Admin</h4>
+          <p className="mb-0">Sub Admin Details .</p> */}
+        </div>
+      
+      </div>
+        
+        <div class="container">
+
+
+
+<div class="row">
+  <div class="col-md">
+
+             <div style={{display:"flex"}}>
+    <div style={{width:"70%"}}><h4><b></b></h4></div>
+    <div style={{marginTop:"5px"}}>
+    
+        
+       
+        </div>
+    
+   
+    
+
+</div>
+
+        <div style={{overflowX:"scroll",overflowY:"scroll"}}>
+        
+          
+       
+       
+        <table className="table">
+          <thead className="thead-light">
+            <tr>
+           
+           
+              <th style={{border:"1px double black",width:"150px" ,backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Sl No</th>
+
+              <th style={{border:"1px double black",width:"150px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Table Name</th>
+             
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Joker Type</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Point Value</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Min Entry</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Status</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Player</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Action</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Delete</th>
+              
+              
+              
+           
+            </tr>
+            
+          </thead>
+          <tbody>
+            { this.customerList() }
+          </tbody>
+         
+        </table>
+        </div>
+        </div>
+        </div>
+        </div>
+        
+      </div>
+    )
+  }
 }
-
-render( <Datepicker /> )`}
-        />
-
-      </Container>
-    </article>
-  );
-};

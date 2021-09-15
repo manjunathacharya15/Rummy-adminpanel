@@ -38,6 +38,8 @@ import Badges from "./components/Badges";
 import Breadcrumbs from "./components/Breadcrumbs";
 import Buttons from "./components/Buttons";
 import Forms from "./components/Forms";
+
+
 import Modals from "./components/Modals";
 import Navs from "./components/Navs";
 import Navbars from "./components/Navbars";
@@ -48,6 +50,11 @@ import Tables from "./components/Tables";
 import Tabs from "./components/Tabs";
 import Tooltips from "./components/Tooltips";
 import Toasts from "./components/Toasts";
+import Practicegame1 from "./components/practicegame1";
+import Practicegame2 from "./components/practicegame2";
+import Practicegame3 from "./components/practicegame3";
+import Practicegame4 from "./components/practicegame4";
+
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
@@ -127,6 +134,10 @@ export default () => (
     <RouteWithSidebar exact path={Routes.Navs.path} component={Navs} />
     <RouteWithSidebar exact path={Routes.Navbars.path} component={Navbars} />
     <RouteWithSidebar exact path={Routes.Pagination.path} component={Pagination} />
+    <RouteWithSidebar exact path={Routes.Practicegame1.path} component={Practicegame1} />
+    <RouteWithSidebar exact path={Routes.Practicegame2.path} component={Practicegame2} />
+    <RouteWithSidebar exact path={Routes.Practicegame3.path} component={Practicegame3} />
+    <RouteWithSidebar exact path={Routes.Practicegame4.path} component={Practicegame4} />
     <RouteWithSidebar exact path={Routes.Popovers.path} component={Popovers} />
     <RouteWithSidebar exact path={Routes.Progress.path} component={Progress} />
     <RouteWithSidebar exact path={Routes.Tables.path} component={Tables} />
