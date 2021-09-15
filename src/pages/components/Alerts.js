@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-import {  faCog, faHome, faSearch,faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import {  faCog, faHome, faSearch,faTrashAlt,faEye, } from '@fortawesome/free-solid-svg-icons';
 import { Col, Row, Form, Button, ButtonGroup, Breadcrumb, InputGroup, Dropdown } from '@themesberg/react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -17,7 +17,7 @@ export default class buttons extends Component {
     this.onChangename = this.onChangename.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.state = {
-      name:'',
+      fullname:'',
       
       customers: []
     };
@@ -36,8 +36,8 @@ export default class buttons extends Component {
         result.map(e => {
           return{
             select : false,
-            id : e._id,
-           name : e.name,
+            _id : e._id,
+           fullname : e.fullname,
           
             phonenumber:e.phonenumber,
             email:e.email,
@@ -81,14 +81,14 @@ export default class buttons extends Component {
   };
   onChangename(e) {
     this.setState({
-name: e.target.value
+fullname: e.target.value
     })
   }
   onSubmit(e) {
     e.preventDefault();
 
     const customer = {
-      name: this.state.name
+      fullname: this.state.fullname
       
       
     }
@@ -112,38 +112,33 @@ name: e.target.value
   
   customerList() {
     this.state.customers.sort(function(a,b){
-      if(a.name.toLowerCase() < b.name.toLowerCase()) return -1;
-      if(a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+      if(a.fullname.toLowerCase() < b.fullname.toLowerCase()) return -1;
+      if(a.fullname.toLowerCase() > b.fullname.toLowerCase()) return 1;
       return 0;
      })
 
     return this.state.customers.map(currentcustomer => (
       <tr>
-        <td  style={{border:"1px double black",textAlign:"center"}}>
+        {/* <td  style={{border:"1px double black",textAlign:"center"}}>
         <input type="checkbox" onChange={e => {
                                 let value = e.target.checked
                                 console.log(this.state)
                                 this.state.customers.find(o => o.id=== currentcustomer.id).select = value
                                 this.setState(this.state);
                             }} />
-      </td>
-      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.name}</td>
+      </td> */}
+       <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer._id}</td>
+      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.fullname}</td>
       
       <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.phonenumber}</td>
       
       <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.email}</td>
-      <td style={{border:"1px double black",textAlign:"center"}}>{currentcustomer.place}</td>
-      
-      <td style={{border:"1px double black",textAlign:"center"}}><select>
-        <option>Adhar Number:{currentcustomer.adharnumber}</option>
-        <option>Pan Number:{currentcustomer.pannumber}</option>
-        <option>Driving Licence:{currentcustomer.drivinglicence}</option></select></td>
       
       
-    {/* <select>
-      details
-      <option>{currentcustomer.pannumber}</option>
-    </select> */}
+      <td style={{border:"1px double black",textAlign:"center"}}><Link to={"/components/badges/"+currentcustomer._id}><FontAwesomeIcon icon={faEye}/></Link></td>
+      
+      
+    
     </tr>
    
      
@@ -151,7 +146,7 @@ name: e.target.value
     
   }
   
-  
+
  
 
 
@@ -188,31 +183,7 @@ name: e.target.value
             </InputGroup>
             </Form>
           </Col>
-          <Col xs={12} md={6} xl={3} className="ps-md-0 text-end" style={{marginRight:"200px"}}>
           
-            
-            <Dropdown as={ButtonGroup} >
-              <Dropdown.Toggle split as={Button} variant="link" className="text-dark m-0 p-0">
-                <span className="icon icon-sm icon-gray" style={{marginRight:"15px"}}>
-                  <b>Actions</b>
-                 
-                </span>
-                <FontAwesomeIcon icon={faCog} />
-              </Dropdown.Toggle>
-              <Dropdown.Menu className="dropdown-menu-xs dropdown-menu-right">
-              
-                {/* <Dropdown.Item className="d-flex fw-bold">
-                <Link to="/components/breadcrumbs" className="nav-link">    <span className="icon icon-small ms-auto">Adduser <FontAwesomeIcon icon={faPlus} style={{marginLeft:"16px"}} /></span></Link>
-                </Dropdown.Item> */}
-                <Dropdown.Item className="fw-bold" >
-                <span style={{marginRight:"10px"}}    onClick={() => {
-          this.deleteCustomerByIds();
-        }}  > Delete <FontAwesomeIcon icon={faTrashAlt} style={{marginLeft:"5px"}} /> </span>
-                </Dropdown.Item>
-               
-              </Dropdown.Menu>
-            </Dropdown>
-          </Col>
           </Row>
           </div>
         
@@ -245,14 +216,14 @@ name: e.target.value
           <thead className="thead-light">
             <tr>
            
-            <th style={{border:"1px double  black",width:"100px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Delete</th>
-              <th style={{border:"1px double black",width:"150px" ,backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Name</th>
+            <th style={{border:"1px double  black",width:"100px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Sl No</th>
+              <th style={{border:"1px double black",width:"150px" ,backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Full Name</th>
 
               <th style={{border:"1px double black",width:"150px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Phone Number</th>
              
               <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Email Id</th>
-              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Place</th>
-              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Personal Details</th>
+              
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Actions</th>
              
               
               

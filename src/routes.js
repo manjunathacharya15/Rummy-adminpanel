@@ -29,7 +29,7 @@ export const Routes = {
     // components
     Accordions: { path: "/components/accordions" },
     Alerts: { path: "/components/alerts" },
-    Badges: { path: "/components/badges" },
+    Badges: { path: "/components/badges/:id" },
     Widgets: { path: "/widgets" },
     Breadcrumbs: { path: "/components/breadcrumbs" },
     Buttons: { path: "/components/buttons" },

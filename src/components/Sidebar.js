@@ -4,8 +4,8 @@ import SimpleBar from 'simplebar-react';
 import { useLocation } from "react-router-dom";
 import { CSSTransition } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt, faTimes,faUserTie,faMoneyCheckAlt,faHandHoldingUsd } from "@fortawesome/free-solid-svg-icons";
-import { Nav, Badge, Image, Button,  Navbar } from '@themesberg/react-bootstrap';
+import { faSignOutAlt, faTimes,faUserTie,faMoneyCheckAlt,faHandHoldingUsd,faFileAlt,faFileContract, } from "@fortawesome/free-solid-svg-icons";
+import { Nav, Badge, Image, Button,  Navbar,NavDropdown } from '@themesberg/react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import { Routes } from "../routes";
@@ -99,8 +99,119 @@ export default (props = {}) => {
             <Nav className="flex-column pt-3 pt-md-0">
                <NavItem title="Rummy Admin Panel" link={Routes.DashboardOverview.path} image={"https://cdn.britannica.com/09/148309-050-AFB7AF13/gin-hand-rummy.jpg"  } />
               <NavItem title="User Details" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Payments" link={Routes.Alerts.path} icon={faMoneyCheckAlt} /> 
-              <NavItem title="Tournament" icon={faHandHoldingUsd} link={Routes.Accordions.path} /> 
+              <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Real Money Tables</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
+              
+                <NavItem title="Point Rummy "  />
+                <NavItem title="pool Rummy  "  />
+                <NavItem title="Deal Rummy "  />
+                <NavItem title="Papplu Rummy "  />
+                
+                
+              </NavDropdown>
+              <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Practice Game Tables</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
+                
+                <NavItem title="Point Rummy "  />
+                <NavItem title="pool Rummy  "  />
+                <NavItem title="Deal Rummy "  />
+                <NavItem title="Papplu Rummy "  />
+                
+                
+              </NavDropdown>
+              <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Tournaments</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
+                <NavItem title="Create New Tournaments "  />
+                <NavItem title="Tournaments Details "  />
+                <NavItem title="Tournaments Transactions  "  />
+                
+                
+                
+              </NavDropdown>
+              <NavItem title="Table Entry" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Bonus Entry" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Player Details" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Game Transaction Details" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Player Transaction Details" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Company Balance " link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Fund Transfer Report" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Withdrawal Request" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Add fund to player account" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Fund Details" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Bank Details" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Payment Details" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Verify Kyc" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Configuration</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
+                <NavItem title="Commission "  />
+                <NavItem title="Email Configuration "  />
+                <NavItem title="Sms Configuration  "  />
+                <NavItem title="Payment Gateway Setting "  />
+                <NavItem title="Social Configuration "  />
+                <NavItem title="Base URL  "  />
+                <NavItem title="IP Configuration "  />
+                <NavItem title="IP Configuration Papplu "  />
+                
+                
+              </NavDropdown>
+              <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Emails to Players</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
+                <NavItem title="Send new Emails "  />
+                <NavItem title="Sent Emails List "  />
+                <NavItem title="Email Template  "  />
+                
+                
+                
+              </NavDropdown>
+              <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Send SMS</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
+                <NavItem title="Send New Sms "  />
+                <NavItem title="Sent SMS Details "  />
+                <NavItem title="SMS template  "  />
+                
+                
+                
+              </NavDropdown>
+              <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Notification To players</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
+                <NavItem title="Send New Notification "  />
+                <NavItem title="Sent Notification List "  />
+            
+                
+                
+                
+              </NavDropdown>
+              <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Promotions</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
+                <NavItem title="Add Promotions "  />
+                <NavItem title="Promotions List "  />
+             
+                
+                
+                
+              </NavDropdown>
+              <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Referral Program</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
+                <NavItem title="Set Refferral Commission "  />
+                <NavItem title="Commission Report  "  />
+                <NavItem title="Commission Withdraw Request  "  />
+                <NavItem title="Sent Refer Email List "  />
+                <NavItem title="Add Banner"  />
+                <NavItem title="Banner List  "  />
+                
+                
+              </NavDropdown>
+              <NavItem title="Login History" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Browser History" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Contact Us Enquiry" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Web Slider" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Mobile Slider" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Logo Upload" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Help & Support</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
+                <NavItem title="Create Tickets "  />
+                <NavItem title="Coupons List "  />
+             
+                
+                
+                
+              </NavDropdown>
+              <NavItem title="Freezed Points" link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Report Card" link={Routes.Alerts.path} icon={faUserTie} />
+
+              
+              {/* <NavItem title="Payments" link={Routes.Alerts.path} icon={faMoneyCheckAlt} /> 
+              <NavItem title="Tournament" icon={faHandHoldingUsd} link={Routes.Accordions.path} />  */}
               {/* 
                <NavItem title="Settings" icon={faCog} link={Routes.Settings.path} />
 
