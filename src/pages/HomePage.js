@@ -74,8 +74,17 @@ import Bannerlist from "./components/bannerlist";
 import Bankdetails from "./components/bankdetails";
 import Commission from "./components/commission";
 import Commissionwithdraw from "./components/commissionwithdraw";
-
-
+import Promotionlist from "./components/promotionlist";
+import Fundtransferreport from "./components/fundtransferreport";
+import Withdrawrequest from "./components/withdrawrequest";
+import Funddetails from "./components/funddetails";
+import Verifykyc from "./components/verifykyc";
+import Loginhistory from "./components/loginhistory";
+import Contactus from "./components/Contactus";
+import Webslider from "./components/webslider";
+import Mobileslider from "./components/mobileslider";
+import Logoupload from "./components/logoupload";
+import Freezedreport from "./components/freezedreport";
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
 
@@ -178,6 +187,17 @@ export default () => (
     <RouteWithSidebar exact path={Routes.Bankdetails.path} component={Bankdetails} />
     <RouteWithSidebar exact path={Routes.Commission.path} component={Commission} />
     <RouteWithSidebar exact path={Routes.Commissionwithdraw.path} component={Commissionwithdraw} />
+    <RouteWithSidebar exact path={Routes.Promotionlist.path} component={Promotionlist} />
+    <RouteWithSidebar exact path={Routes.Fundtransferreport.path} component={Fundtransferreport} />
+    <RouteWithSidebar exact path={Routes.withdrawrequest.path} component={Withdrawrequest} />
+    <RouteWithSidebar exact path={Routes.Funddetails.path} component={Funddetails} />
+    <RouteWithSidebar exact path={Routes.Verifykyc.path} component={Verifykyc} />
+    <RouteWithSidebar exact path={Routes.Loginhistory.path} component={Loginhistory} />
+    <RouteWithSidebar exact path={Routes.Contactus.path} component={Contactus} />
+    <RouteWithSidebar exact path={Routes.Webslider.path} component={Webslider} />
+    <RouteWithSidebar exact path={Routes.Mobileslider.path} component={Mobileslider} />
+    <RouteWithSidebar exact path={Routes.Logoupload.path} component={Logoupload} />
+    <RouteWithSidebar exact path={Routes.Freezedreport.path} component={Freezedreport} />
     <RouteWithSidebar exact path={Routes.Popovers.path} component={Popovers} />
     <RouteWithSidebar exact path={Routes.Progress.path} component={Progress} />
     <RouteWithSidebar exact path={Routes.Tables.path} component={Tables} />

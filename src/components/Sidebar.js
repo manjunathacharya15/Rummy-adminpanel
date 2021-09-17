@@ -132,14 +132,14 @@ export default (props = {}) => {
               <NavItem title="Game Transaction Details" link={Routes.Gametransactions.path} icon={faUserTie} />
               <NavItem title="Player Transaction Details" link={Routes.Playertransactions.path} icon={faUserTie} />
               <NavItem title="Company Balance " link={Routes.Companybal.path} icon={faUserTie} />
-              <NavItem title="Fund Transfer Report" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Withdrawal Request" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Add fund to player account" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Fund Details" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Bank Details" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Payment Details" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Verify Kyc" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Configuration</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
+              <NavItem title="Fund Transfer Report" link={Routes.Fundtransferreport.path} icon={faUserTie} />
+              <NavItem title="Withdrawal Request" link={Routes.withdrawrequest.path} icon={faUserTie} />
+              <NavItem title="Add fund to player account" link={Routes.Addfund.path} icon={faUserTie} />
+              <NavItem title="Fund Details" link={Routes.Funddetails.path} icon={faUserTie} />
+              <NavItem title="Bank Details" link={Routes.Bankdetails.path} icon={faUserTie} />
+              {/* <NavItem title="Payment Details" link={Routes.Alerts.path} icon={faUserTie} /> */}
+              <NavItem title="Verify Kyc" link={Routes.Verifykyc.path} icon={faUserTie} />
+              {/* <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Configuration</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
                 <NavItem title="Commission "  />
                 <NavItem title="Email Configuration "  />
                 <NavItem title="Sms Configuration  "  />
@@ -150,16 +150,16 @@ export default (props = {}) => {
                 <NavItem title="IP Configuration Papplu "  />
                 
                 
-              </NavDropdown>
-              <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Emails to Players</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
+              </NavDropdown> */}
+              {/* <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Emails to Players</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
                 <NavItem title="Send new Emails "  />
                 <NavItem title="Sent Emails List "  />
                 <NavItem title="Email Template  "  />
                 
                 
                 
-              </NavDropdown>
-              <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Send SMS</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
+              </NavDropdown> */}
+              {/* <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Send SMS</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
                 <NavItem title="Send New Sms "  />
                 <NavItem title="Sent SMS Details "  />
                 <NavItem title="SMS template  "  />
@@ -174,41 +174,41 @@ export default (props = {}) => {
                 
                 
                 
-              </NavDropdown>
+              </NavDropdown> */}
               <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Promotions</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
-                <NavItem title="Add Promotions "  />
-                <NavItem title="Promotions List "  />
+                <NavItem title="Add Promotions " link={Routes.Addpromoations.path}  />
+                <NavItem title="Promotions List " link={Routes.Promotionlist.path}  />
              
                 
                 
                 
               </NavDropdown>
               <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Referral Program</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
-                <NavItem title="Set Refferral Commission "  />
-                <NavItem title="Commission Report  "  />
-                <NavItem title="Commission Withdraw Request  "  />
-                <NavItem title="Sent Refer Email List "  />
-                <NavItem title="Add Banner"  />
-                <NavItem title="Banner List  "  />
+                <NavItem title="Set Refferral Commission " link={Routes.Commission.path}  />
+                <NavItem title="Commission Report  " link={Routes.Commissionreport.path} />
+                <NavItem title="Commission Withdraw Request  " link={Routes.Commissionwithdraw.path}  />
+                {/* <NavItem title="Sent Refer Email List "  /> */}
+                <NavItem title="Add Banner"  link={Routes.Addbanner.path} />
+                <NavItem title="Banner List  "  link={Routes.Bannerlist.path} />
                 
                 
               </NavDropdown>
-              <NavItem title="Login History" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Browser History" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Contact Us Enquiry" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Web Slider" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Mobile Slider" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Logo Upload" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Help & Support</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
+              <NavItem title="Login History" link={Routes.Loginhistory.path} icon={faUserTie} />
+              <NavItem title="Browser History" link={Routes.Browsehistory.path} icon={faUserTie} />
+              <NavItem title="Contact Us Enquiry" link={Routes.Contactus.path} icon={faUserTie} />
+              <NavItem title="Web Slider" link={Routes.Webslider.path} icon={faUserTie} />
+              <NavItem title="Mobile Slider" link={Routes.Mobileslider.path} icon={faUserTie} />
+              <NavItem title="Logo Upload" link={Routes.Logoupload.path} icon={faUserTie} />
+              {/* <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Help & Support</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
                 <NavItem title="Create Tickets "  />
                 <NavItem title="Coupons List "  />
              
                 
                 
                 
-              </NavDropdown>
-              <NavItem title="Freezed Points" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Report Card" link={Routes.Alerts.path} icon={faUserTie} />
+              </NavDropdown> */}
+              <NavItem title="Freezed Points" link={Routes.Freezedreport.path} icon={faUserTie} />
+              {/* <NavItem title="Report Card" link={Routes.Alerts.path} icon={faUserTie} /> */}
 
               
               {/* <NavItem title="Payments" link={Routes.Alerts.path} icon={faMoneyCheckAlt} /> 

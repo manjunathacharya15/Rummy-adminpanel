@@ -263,7 +263,7 @@ export default class buttons extends Component {
         <div className="d-block mb-4 mb-md-0">
           <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
             <Breadcrumb.Item><FontAwesomeIcon icon={faHome} /></Breadcrumb.Item>
-            <Breadcrumb.Item>User Browse History</Breadcrumb.Item>
+            <Breadcrumb.Item>User Login History</Breadcrumb.Item>
           
           </Breadcrumb>
           {/* <h4>Sub Admin</h4>

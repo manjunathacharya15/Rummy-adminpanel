@@ -157,90 +157,9 @@ export default class buttons extends Component {
       
       
       <div style={{marginTop:"50px"}}>
-        <div>
-        <Card border="light" className="bg-white shadow-sm mb-4">
-      <Card.Body>
-        <h5 className="mb-4">Search </h5>
-        <Form onSubmit={this.onSubmit}>
-        <Row>
-            <Col md={6} className="mb-3">
-              <Form.Group id="firstName">
-                <Form.Label> From Date</Form.Label>
-                <Col md={3} className="mb-3">
-                <DatePicker
-            
-            selected={this.state.expdate}
-            onChange={this.onChangeexpdate}
-            name="startDate"
        
-           
-           
-            timeCaption="time"
-            dateFormat="MMMM dd yyyy "
-           />
-       
-           </Col>
-              </Form.Group>
-            </Col>
-           
-            
 
-            
-            
-          </Row>
-          <Row>
-            <Col md={6} className="mb-3">
-              <Form.Group id="firstName">
-                <Form.Label> To Date</Form.Label>
-                <Col md={3} className="mb-3">
-                <DatePicker
-            
-            selected={this.state.expdate}
-            onChange={this.onChangeexpdate}
-            name="startDate"
-       
-           
-           
-            timeCaption="time"
-            dateFormat="MMMM dd yyyy "
-           />
-       
-           </Col>
-              </Form.Group>
-            </Col>
-           
-            
-
-            
-            
-          </Row>
-          
-            
-          {/* <Row>
-            <Col md={6} className="mb-3">
-              <Form.Group id="firstName">
-                <Form.Label> Status Type</Form.Label>
-                <br/>
-                <button>Status Type</button>
-              </Form.Group>
-            </Col>
-           
-            
-
-            
-            
-          </Row>
-           */}
-          
-          
-        
-        </Form>
-        
-      </Card.Body>
-    </Card>
-        </div>
-
-      <div className="table-settings mb-4">
+      {/* <div className="table-settings mb-4">
         <Row className="justify-content-between align-items-center">
           <Col xs={8} md={6} lg={3} xl={4}>
             <Form onSubmit={this.onSubmit}>
@@ -258,12 +177,12 @@ export default class buttons extends Component {
          
 
           </div>
-         
+          */}
           <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div className="d-block mb-4 mb-md-0">
           <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
             <Breadcrumb.Item><FontAwesomeIcon icon={faHome} /></Breadcrumb.Item>
-            <Breadcrumb.Item>User Browse History</Breadcrumb.Item>
+            <Breadcrumb.Item>Enquriries List</Breadcrumb.Item>
           
           </Breadcrumb>
           {/* <h4>Sub Admin</h4>
@@ -306,14 +225,17 @@ export default class buttons extends Component {
 
               <th style={{border:"1px double black",width:"150px" ,backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Name</th>
              
-        
-              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Username </th>
-              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Mobile</th>
-              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Email</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Email Id</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Mobile no</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Subject </th>
+              
+            
   
             
               
-              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>History</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Message</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Sending Date</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Delete</th>
               
               
              

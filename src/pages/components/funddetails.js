@@ -215,23 +215,7 @@ export default class buttons extends Component {
             
           </Row>
           
-            
-          {/* <Row>
-            <Col md={6} className="mb-3">
-              <Form.Group id="firstName">
-                <Form.Label> Status Type</Form.Label>
-                <br/>
-                <button>Status Type</button>
-              </Form.Group>
-            </Col>
            
-            
-
-            
-            
-          </Row>
-           */}
-          
           
         
         </Form>
@@ -248,7 +232,7 @@ export default class buttons extends Component {
               <InputGroup.Text>
                 <FontAwesomeIcon icon={faSearch} />
               </InputGroup.Text>
-              <Form.Control type="text" placeholder="Search " value={this.state.name} onChange={this.onChangename} />
+              <Form.Control type="text" placeholder="Search" value={this.state.name} onChange={this.onChangename} />
             </InputGroup>
             </Form>
           </Col>
@@ -263,7 +247,7 @@ export default class buttons extends Component {
         <div className="d-block mb-4 mb-md-0">
           <Breadcrumb className="d-none d-md-inline-block" listProps={{ className: "breadcrumb-dark breadcrumb-transparent" }}>
             <Breadcrumb.Item><FontAwesomeIcon icon={faHome} /></Breadcrumb.Item>
-            <Breadcrumb.Item>User Browse History</Breadcrumb.Item>
+            <Breadcrumb.Item>Member Fund Details</Breadcrumb.Item>
           
           </Breadcrumb>
           {/* <h4>Sub Admin</h4>
@@ -304,19 +288,16 @@ export default class buttons extends Component {
            
               <th style={{border:"1px double black",width:"150px" ,backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Sl No</th>
 
-              <th style={{border:"1px double black",width:"150px" ,backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Name</th>
+              <th style={{border:"1px double black",width:"150px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}> Name</th>
              
-        
-              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Username </th>
-              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Mobile</th>
-              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Email</th>
-  
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>User Name</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Amount</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Payment Mode   </th> 
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Order ID</th>
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>Real Clips</th>
             
-              
-              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}>History</th>
-              
-              
              
+              <th style={{border:"1px double black",width:"30px",backgroundColor:"00ADB5",color:"black",textAlign:"center"}}> Date & Time </th>
               
               
               
