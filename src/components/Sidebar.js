@@ -97,7 +97,7 @@ export default (props = {}) => {
               </Nav.Link>
             </div>
             <Nav className="flex-column pt-3 pt-md-0">
-               <NavItem title="Pokker Admin Panel" link={Routes.DashboardOverview.path} image={"https://cdn.britannica.com/09/148309-050-AFB7AF13/gin-hand-Pokker.jpg"  } />
+               <NavItem title="Pokker Admin Panel" link={Routes.DashboardOverview.path} image={"https://cdn.britannica.com/09/148309-050-AFB7AF13/gin-hand-Pokker.jpg"} />
               <NavItem title="User Details" link={Routes.Alerts.path} icon={faUserTie} />
               <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Real Money Tables</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
               
