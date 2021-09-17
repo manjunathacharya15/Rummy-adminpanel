@@ -97,7 +97,7 @@ export default (props = {}) => {
               </Nav.Link>
             </div>
             <Nav className="flex-column pt-3 pt-md-0">
-               <NavItem title="Rummy Admin Panel" link={Routes.DashboardOverview.path} image={"https://cdn.britannica.com/09/148309-050-AFB7AF13/gin-hand-rummy.jpg"  } />
+               <NavItem title="Pokker Admin Panel" link={Routes.DashboardOverview.path} image={"https://cdn.britannica.com/09/148309-050-AFB7AF13/gin-hand-rummy.jpg"  } />
               <NavItem title="User Details" link={Routes.Alerts.path} icon={faUserTie} />
               <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Real Money Tables</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
               
@@ -111,27 +111,27 @@ export default (props = {}) => {
               </NavDropdown>
               <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Practice Game Tables</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
                 
-                <NavItem title="Point Rummy "  />
-                <NavItem title="pool Rummy  "  />
-                <NavItem title="Deal Rummy "  />
-                <NavItem title="Papplu Rummy "  />
+                <NavItem title="Point Rummy " link={Routes.Tables.path}  />
+                <NavItem title="pool Rummy  "  link={Routes.Tabs.path} />
+                <NavItem title="Deal Rummy "  link={Routes.Toasts.path} />
+                <NavItem title="Papplu Rummy "  link={Routes.Tooltips.path} />
                 
                 
               </NavDropdown>
               <NavDropdown menuVariant="dark" eventKey="examples/"   title={<span><FontAwesomeIcon icon={faFileContract}/> Tournaments</span>} icon={faFileAlt} image={"https://cdn2.vectorstock.com/i/1000x1000/40/96/taxi-cab-service-icon-vector-17874096.jpg" }>
-                <NavItem title="Create New Tournaments "  />
-                <NavItem title="Tournaments Details "  />
-                <NavItem title="Tournaments Transactions  "  />
+                <NavItem title="Create New Tournaments " link={Routes.Addtournament.path} />
+                <NavItem title="Tournaments Details "  link={Routes.Tournamentdetails.path} />
+                <NavItem title="Tournaments Transactions  " link={Routes.Tournamenttrans.path}  />
                 
                 
                 
               </NavDropdown>
-              <NavItem title="Table Entry" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Bonus Entry" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Player Details" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Game Transaction Details" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Player Transaction Details" link={Routes.Alerts.path} icon={faUserTie} />
-              <NavItem title="Company Balance " link={Routes.Alerts.path} icon={faUserTie} />
+              <NavItem title="Table Entry" link={Routes.Navs.path} icon={faUserTie} />
+              <NavItem title="Bonus Entry" link={Routes.bonusentry.path} icon={faUserTie} />
+              <NavItem title="Player Details" link={Routes.Playerdetails.path} icon={faUserTie} />
+              <NavItem title="Game Transaction Details" link={Routes.Gametransactions.path} icon={faUserTie} />
+              <NavItem title="Player Transaction Details" link={Routes.Playertransactions.path} icon={faUserTie} />
+              <NavItem title="Company Balance " link={Routes.Companybal.path} icon={faUserTie} />
               <NavItem title="Fund Transfer Report" link={Routes.Alerts.path} icon={faUserTie} />
               <NavItem title="Withdrawal Request" link={Routes.Alerts.path} icon={faUserTie} />
               <NavItem title="Add fund to player account" link={Routes.Alerts.path} icon={faUserTie} />

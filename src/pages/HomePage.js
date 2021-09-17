@@ -54,6 +54,26 @@ import Practicegame1 from "./components/practicegame1";
 import Practicegame2 from "./components/practicegame2";
 import Practicegame3 from "./components/practicegame3";
 import Practicegame4 from "./components/practicegame4";
+import Tournamenttrans from "./components/tournamenttrans";
+import Playerdetails from "./components/playerdetails";
+import Tournamentdetails from "./components/tournamentdetails";
+import Companybal from "./components/companybal";
+import Addtournament from "./components/addtournament";
+import Playertransactions from "./components/playertransaction";
+import Gametransactions from "./components/gametransactions";
+import Gameresults from "./components/gameresult";
+import bonusentry from "./components/bonusentry";
+import Addcoupon from "./components/addcoupon";
+import Addbanner from "./components/addbanner";
+import Addfund from "./components/addfund";
+import Commissionreport from "./components/commissionreport";
+import Addpromoations from "./components/addpromoations";
+import Baseurl from "./components/baseurl";
+import Browsehistory from "./components/browsehistory";
+import Bannerlist from "./components/bannerlist";
+import Bankdetails from "./components/bankdetails";
+import Commission from "./components/commission";
+import Commissionwithdraw from "./components/commissionwithdraw";
 
 
 const RouteWithLoader = ({ component: Component, ...rest }) => {
@@ -138,6 +158,26 @@ export default () => (
     <RouteWithSidebar exact path={Routes.Practicegame2.path} component={Practicegame2} />
     <RouteWithSidebar exact path={Routes.Practicegame3.path} component={Practicegame3} />
     <RouteWithSidebar exact path={Routes.Practicegame4.path} component={Practicegame4} />
+    <RouteWithSidebar exact path={Routes.Tournamenttrans.path} component={Tournamenttrans} />
+    <RouteWithSidebar exact path={Routes.Playerdetails.path} component={Playerdetails} />
+    <RouteWithSidebar exact path={Routes.Tournamentdetails.path} component={Tournamentdetails} />
+    <RouteWithSidebar exact path={Routes.Companybal.path} component={Companybal} />
+    <RouteWithSidebar exact path={Routes.Addtournament.path} component={Addtournament} />
+    <RouteWithSidebar exact path={Routes.Playertransactions.path} component={Playertransactions} />
+    <RouteWithSidebar exact path={Routes.Gametransactions.path} component={Gametransactions} />
+    <RouteWithSidebar exact path={Routes.bonusentry.path} component={bonusentry} />
+    <RouteWithSidebar exact path={Routes.Gameresults.path} component={Gameresults} />
+    <RouteWithSidebar exact path={Routes.Addcoupon.path} component={Addcoupon} />
+    <RouteWithSidebar exact path={Routes.Addbanner.path} component={Addbanner} />
+    <RouteWithSidebar exact path={Routes.Addfund.path} component={Addfund} />
+    <RouteWithSidebar exact path={Routes.Commissionreport.path} component={Commissionreport} />
+    <RouteWithSidebar exact path={Routes.Addpromoations.path} component={Addpromoations} />
+    <RouteWithSidebar exact path={Routes.Browsehistory.path} component={Browsehistory} />
+    <RouteWithSidebar exact path={Routes.Baseurl.path} component={Baseurl} />
+    <RouteWithSidebar exact path={Routes.Bannerlist.path} component={Bannerlist} />
+    <RouteWithSidebar exact path={Routes.Bankdetails.path} component={Bankdetails} />
+    <RouteWithSidebar exact path={Routes.Commission.path} component={Commission} />
+    <RouteWithSidebar exact path={Routes.Commissionwithdraw.path} component={Commissionwithdraw} />
     <RouteWithSidebar exact path={Routes.Popovers.path} component={Popovers} />
     <RouteWithSidebar exact path={Routes.Progress.path} component={Progress} />
     <RouteWithSidebar exact path={Routes.Tables.path} component={Tables} />

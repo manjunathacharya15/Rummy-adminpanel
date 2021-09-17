@@ -14,13 +14,16 @@ export default class Accordion extends Component{
         super(props);
     
         
-        this.onChangename = this.onChangename.bind(this);
-        this.onChangeemail= this.onChangeemail.bind(this);
-        this.onChangeprofilepicture = this.onChangeprofilepicture.bind(this);
+        this.onChangegame = this.onChangegame.bind(this);
+        this.onChangegametype= this.onChangegametype.bind(this);
+        this.onChangetablename = this.onChangetablename.bind(this);
+        this.onChangetablenumber = this.onChangetablenumber.bind(this);
         
         
-        this.onChangepassword = this.onChangepassword.bind(this);
-        this.onChangerole = this.onChangerole.bind(this);
+        this.onChangebet = this.onChangebet.bind(this);
+        this.onChangevaluepoints = this.onChangevaluepoints.bind(this);
+        this.onChangesittingcapacity = this.onChangesittingcapacity.bind(this);
+        this.onChangetablestatus = this.onChangetablestatus.bind(this);
 
        
       
@@ -31,11 +34,15 @@ export default class Accordion extends Component{
 
         this.onSubmit = this.onSubmit.bind(this);
         this.state = {
-          name:'',
-          email:'',
-          file1: null,
-          password:'',
-          role:'',
+          game:'',
+          gametype:'',
+          tablename: '',
+          tablenumber: '',
+          bet:'',
+          valueponits:'',
+          sittingcapacity:'',
+          tablestatus:'',
+
          
             trainer:[]
             
@@ -43,30 +50,45 @@ export default class Accordion extends Component{
           }
         }
         
-        onChangename(e) {
+        onChangegame(e) {
           this.setState({
-            name: e.target.value
+            game: e.target.value
           })
         }
           
-          onChangeemail(e) {
+          onChangegametype(e) {
             this.setState({
-              email: e.target.value
+              gametype: e.target.value
             })
           }
-          onChangeprofilepicture(e) {
+          onChangetablename(e) {
             this.setState({
-            file1: e.target.files[0]
+            tablename: e.target.value
             })
           }
-          onChangepassword(e) {
+          onChangetablenumber(e) {
             this.setState({
-              password: e.target.value
+              tablenumber: e.target.value
             })
           }
-          onChangerole(e) {
+          onChangebet(e) {
             this.setState({
-            role: e.target.value
+            bet: e.target.value
+            })
+          }
+          onChangevaluepoints(e) {
+            this.setState({
+            valueponits: e.target.value
+            })
+          }
+          onChangesittingcapacity(e) {
+            this.setState({
+            sittingcapacity: e.target.value
+            })
+          }
+          onChangetablestatus(e) {
+            this.setState({
+            tablestatus: e.target.value
             })
           }
          
@@ -90,29 +112,30 @@ export default class Accordion extends Component{
   
    
   
-            const formData=new FormData();
-            formData.append('name',this.state.name);
-            formData.append('email',this.state.email);
-            formData.append('profilepicture',this.state.file1);
-            formData.append('role',this.state.role);
-            formData.append('password',this.state.password);
-            
-          
-            
-            
-            const config={
-              headers:{
-                'content-type':'multipart/form-data'
-              }
+            const customer = {
+              game: this.state.game,
+              gametype: this.state.gametype,
+              tablename: this.state.tablename,
+              tablenumber:this.state.tablenumber,
+              bet:this.state.bet,
+              valueponits:this.state.valueponits,
+              sittingcapacity:this.state.sittingcapacity,
+              tablestatus: this.state.tablestatus,
+             
+
+              
         
-            
+        
+             
+              
+        
             }
-            axios.post('https://acabnodejs.herokuapp.com/subadmin/add', formData)
+            axios.post('https://arummynodejs.herokuapp.com/dealrummy/add', customer)
             .then(function(response){
         
-              if(response.data ==='Subadmin added!'){
-                alert("Subadmin Added")
-                  window.location='/#/components/alerts'
+              if(response.data ==='Dealrummy added!'){
+                alert("Deal Pokker Added")
+                  window.location.reload(true)
               }
              }) 
           }
@@ -128,7 +151,7 @@ export default class Accordion extends Component{
             <Col md={6} className="mb-3">
               <Form.Group id="firstName">
                 <Form.Label> Game:</Form.Label>
-                <select class="form-control" id="calculator" name="game" onChange={this.onChangedgender} value={this.state.dgender}>
+                <select class="form-control" id="calculator" name="game" onChange={this.onChangegame} value={this.state.game}>
                                                     <option value="Crash Game">Crash Game</option>
                                                     <option value="Free Game">Free Game</option>
                                                     
@@ -147,7 +170,7 @@ export default class Accordion extends Component{
           <Col md={6} className="mb-3">
               <Form.Group id="firstName">
                 <Form.Label> Game Type:</Form.Label>
-                <select class="form-control" id="calculator" name="gametype" onChange={this.onChangedgender} value={this.state.dgender}>
+                <select class="form-control" id="calculator" name="gametype" onChange={this.onChangegametype} value={this.state.gametype}>
                                                     <option value="Point Rummy">Point Rummy</option>
                                                     <option value="Pool Rummy">Pool Rummy</option>
                                                     <option value="Deal Rummy">Deal Rummy</option>
@@ -164,8 +187,8 @@ export default class Accordion extends Component{
           <Col md={6} className="mb-3">
               <Form.Group id="emal">
                 <Form.Label>Table Name:</Form.Label>
-                <Form.Control required type="text" placeholder="" value={this.state.password}
-              onChange={this.onChangepassword} name="password"
+                <Form.Control required type="text" placeholder="" value={this.state.tablename}
+              onChange={this.onChangetablename} name="password"
               
              />
           
@@ -179,8 +202,8 @@ export default class Accordion extends Component{
           <Col md={6} className="mb-3">
               <Form.Group id="emal">
                 <Form.Label>Table no:</Form.Label>
-                <Form.Control required type="number" placeholder="" value={this.state.password}
-              onChange={this.onChangepassword} name="password"
+                <Form.Control required type="number" placeholder="" value={this.state.tablenumber}
+              onChange={this.onChangetablenumber} name="password"
               
              />
           
@@ -194,8 +217,8 @@ export default class Accordion extends Component{
             <Col md={6} className="mb-3">
               <Form.Group id="phone">
                 <Form.Label>Beat/Entry:</Form.Label>
-                <Form.Control required type="number" placeholder="" value={this.state.password}
-              onChange={this.onChangepassword} name="password"
+                <Form.Control required type="number" placeholder="" value={this.state.bet}
+              onChange={this.onChangebet} name="password"
               
              />
               </Form.Group>
@@ -208,8 +231,8 @@ export default class Accordion extends Component{
             <Col md={6} className="mb-3">
               <Form.Group id="percenta">
                 <Form.Label>Value ponits(Rs):</Form.Label>
-                <Form.Control required type="number" placeholder="" value={this.state.role}
-              onChange={this.onChangerole} max="100" name="role" />
+                <Form.Control required type="number" placeholder="" value={this.state.valueponits}
+              onChange={this.onChangevaluepoints} max="100" name="role" />
               </Form.Group>
             </Col>
             </Row>
@@ -217,7 +240,7 @@ export default class Accordion extends Component{
           <Col md={6} className="mb-3">
               <Form.Group id="firstName">
                 <Form.Label> Sitting Capacity:</Form.Label>
-                <select class="form-control" id="calculator" name="sittingcapacity" onChange={this.onChangedgender} value={this.state.dgender}>
+                <select class="form-control" id="calculator" name="sittingcapacity" onChange={this.onChangesittingcapacity} value={this.state.sittingcapacity}>
                                                     <option value="2 Seat">2 Seat</option>
                                                     <option value="6 Seat">6 Seat</option>
                                                    
@@ -232,7 +255,7 @@ export default class Accordion extends Component{
           <Col md={6} className="mb-3">
               <Form.Group id="firstName">
                 <Form.Label> Table Status:</Form.Label>
-                <select class="form-control" id="calculator" name="tablestatus" onChange={this.onChangedgender} value={this.state.dgender}>
+                <select class="form-control" id="calculator" name="tablestatus" onChange={this.onChangetablestatus} value={this.state.tablestatus}>
                                                     <option value="Live">Live</option>
                                                     <option value="Stop">Stop</option>
                                                    

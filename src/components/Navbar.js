@@ -71,7 +71,7 @@ useEffect(()=>{
           <div className="media d-flex align-items-center">
                   
                   <div className="media-body ms-2 text-dark align-items-center d-none d-lg-block">
-                    <span className="mb-0 font-large fw-bold" style={{fontSize:"25px"}}><b>Rummy Admin Dashboard</b> </span>
+                    <span className="mb-0 font-large fw-bold" style={{fontSize:"25px"}}><b>Pokker Admin Dashboard</b> </span>
                   </div>
                 </div>
               {/* <Form.Group id="topbarSearch">
