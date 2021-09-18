@@ -88,8 +88,8 @@ export default class Accordion extends Component{
   
             const customer = {
               senderid: this.state.senderid,
-              authentication: this.state.authentication,
-              
+              authenticationkey: this.state.authentication,
+              mobilenumber:this.state.mobilenumber,
              
 
               
@@ -144,6 +144,21 @@ export default class Accordion extends Component{
             </Col>
             
           </Row>
+          <Row>
+          <Col md={6} className="mb-3">
+              <Form.Group id="emal">
+                <Form.Label>Mobile Number:</Form.Label>
+                <Form.Control required type="number" placeholder="" value={this.state.mobilenumber}
+              onChange={this.onChangemobilenumber} name="password"
+              
+             />
+          
+              
+              </Form.Group>
+              </Col>
+         
+             
+            </Row>
          
             
             
@@ -164,31 +179,7 @@ export default class Accordion extends Component{
           
         
         </Form>
-        <h4>Send Test Sms</h4>
-        <Row>
-          <Col md={6} className="mb-3">
-              <Form.Group id="emal">
-                <Form.Label>Mobile Number:</Form.Label>
-                <Form.Control required type="number" placeholder="" value={this.state.mobilenumber}
-              onChange={this.onChangemobilenumber} name="password"
-              
-             />
-          
-              
-              </Form.Group>
-              </Col>
-         
-             
-            </Row>
-            <Row>
-            <Col md={3} className="mb-3">
-            <div className="mt-3">
-            <Button variant="primary" type="submit">Submit </Button>
-          
-          </div>
-              </Col>
-              
-              </Row>
+        
           
      
       </Card.Body>

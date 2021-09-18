@@ -90,7 +90,7 @@ export default class Accordion extends Component{
    
   
             const customer = {
-              user: this.state.user,
+              player: this.state.user,
               usetemplate: this.state.usetemplate,
               
               message: this.state.message,

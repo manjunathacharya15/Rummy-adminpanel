@@ -25,6 +25,7 @@ export default class Accordion extends Component{
         this.onChangesmtpauthentication = this.onChangesmtpauthentication.bind(this);
         this.onChangesmtpusername = this.onChangesmtpusername.bind(this);
         this.onChangesmtppassword = this.onChangesmtppassword.bind(this);
+        this.onChangeto = this.onChangeto.bind(this);
         
         
 
@@ -48,6 +49,7 @@ export default class Accordion extends Component{
           smtpauthentication:'',
           smtpusername:'',
           smtppassword:'',
+          to:'',
         
          
             trainer:[]
@@ -99,6 +101,11 @@ export default class Accordion extends Component{
             smtppassword: e.target.value
             })
           }
+          onChangeto(e) {
+            this.setState({
+            to: e.target.value
+            })
+          }
          
          
          
@@ -132,6 +139,7 @@ export default class Accordion extends Component{
               smtpauthentication:this.state.smtpauthentication,
               smtpusername:this.state.smtpusername,
               smtppassword:this.state.smtppassword,
+              to:this.state.to,
 
              
 
@@ -274,6 +282,21 @@ export default class Accordion extends Component{
          
              
             </Row>
+            <Row>
+          <Col md={6} className="mb-3">
+              <Form.Group id="emal">
+                <Form.Label>To:</Form.Label>
+                <Form.Control required type="email" placeholder="" value={this.state.to}
+              onChange={this.onChangeto} name="password"
+              
+             />
+          
+              
+              </Form.Group>
+              </Col>
+         
+             
+            </Row>
             
             
           <Row className="align-items-center">
@@ -293,31 +316,8 @@ export default class Accordion extends Component{
           
         
         </Form>
-        <Row>
-          <Col md={6} className="mb-3">
-              <Form.Group id="emal">
-                <Form.Label>To:</Form.Label>
-                <Form.Control required type="email" placeholder="" value={this.state.bonusvalue}
-              onChange={this.onChangebonusvalue} name="password"
-              
-             />
-          
-              
-              </Form.Group>
-              </Col>
-         
-             
-            </Row>
-            <Row>
-            <Col md={3} className="mb-3">
-            <div className="mt-3">
-            <Button variant="primary" type="submit">Submit </Button>
-          
-          </div>
-              </Col>
-              
-              </Row>
-          
+       
+           
      
       </Card.Body>
     </Card>

@@ -114,7 +114,7 @@ export default class Accordion extends Component{
    
   
             const customer = {
-              socailloginid: this.state.socailloginid,
+              socialloginid: this.state.socailloginid,
               version: this.state.version,
               
               status:this.state.status,
@@ -148,7 +148,7 @@ export default class Accordion extends Component{
    
   
             const customer = {
-              socailloginid: this.state.gsocialloginid,
+              socialloginid: this.state.gsocialloginid,
             
               status:this.state.gstatus,
               
