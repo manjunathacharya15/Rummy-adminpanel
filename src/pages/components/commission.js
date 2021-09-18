@@ -86,8 +86,8 @@ export default class Accordion extends Component{
             axios.post('https://arummynodejs.herokuapp.com/commission/add',customer )
             .then(function(response){
         
-              if(response.data ==='Banner added!'){
-                alert("Banner Added")
+              if(response.data ==='Commission added!'){
+                alert("Commission Added")
                   window.location.reload(true)
               }
              }) 
@@ -98,7 +98,7 @@ export default class Accordion extends Component{
             <div style={{marginTop:"50px"}}>
               <Card border="light" className="bg-white shadow-sm mb-4">
       <Card.Body>
-        <h5 className="mb-4">Base Url</h5>
+        <h5 className="mb-4">Commission</h5>
         <Form onSubmit={this.onSubmit}>
           <Row>
               <h6>Commission in %  will be deducted from players winning amount from every game</h6>

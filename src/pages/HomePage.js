@@ -85,6 +85,22 @@ import Webslider from "./components/webslider";
 import Mobileslider from "./components/mobileslider";
 import Logoupload from "./components/logoupload";
 import Freezedreport from "./components/freezedreport";
+import Createticket from "./components/createticket";
+import Ticketlist from "./components/ticketlist";
+import Refferalcommission from "./components/refferalcommission";
+import Refferalemaillist from "./components/refferalemaillist";
+import Newnotification from "./components/newnotification";
+import Notificationlist from "./components/notificationlist";
+import Newemail from "./components/newemail";
+import Emaillist from "./components/emaillist";
+import Newsms from "./components/newsms";
+import Smslist from "./components/smslist";
+import Emailcongig from "./components/emailconfig";
+import Smsconfig from "./components/smsconfig";
+import Socailconfig from "./components/socailconfig";
+import Paymentgateway from "./components/paymentgateway";
+import Reportcard from "./components/reportcard";
+import Paymentdetails from "./components/paymentdetails";
 const RouteWithLoader = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
 
@@ -198,6 +214,23 @@ export default () => (
     <RouteWithSidebar exact path={Routes.Mobileslider.path} component={Mobileslider} />
     <RouteWithSidebar exact path={Routes.Logoupload.path} component={Logoupload} />
     <RouteWithSidebar exact path={Routes.Freezedreport.path} component={Freezedreport} />
+    <RouteWithSidebar exact path={Routes.Createticket.path} component={Createticket} />
+    <RouteWithSidebar exact path={Routes.Ticketlist.path} component={Ticketlist} />
+    <RouteWithSidebar exact path={Routes.Refferalcommission.path} component={Refferalcommission} />
+    <RouteWithSidebar exact path={Routes.Refferalemaillist.path} component={Refferalemaillist} />
+    <RouteWithSidebar exact path={Routes.Newnotification.path} component={Newnotification} />
+    <RouteWithSidebar exact path={Routes.Notificationlist.path} component={Notificationlist} />
+    <RouteWithSidebar exact path={Routes.Newemail.path} component={Newemail} />
+    <RouteWithSidebar exact path={Routes.Emaillist.path} component={Emaillist} />
+    <RouteWithSidebar exact path={Routes.Newsms.path} component={Newsms} />
+    <RouteWithSidebar exact path={Routes.Smslist.path} component={Smslist} />
+    <RouteWithSidebar exact path={Routes.Emailcongig.path} component={Emailcongig} />
+    <RouteWithSidebar exact path={Routes.Smsconfig.path} component={Smsconfig} />
+    <RouteWithSidebar exact path={Routes.Socailconfig.path} component={Socailconfig} />
+    <RouteWithSidebar exact path={Routes.Paymentgateway.path} component={Paymentgateway} />
+    <RouteWithSidebar exact path={Routes.Reportcard.path} component={Reportcard} />
+    <RouteWithSidebar exact path={Routes.Paymentdetails.path} component={Paymentdetails} />
+    
     <RouteWithSidebar exact path={Routes.Popovers.path} component={Popovers} />
     <RouteWithSidebar exact path={Routes.Progress.path} component={Progress} />
     <RouteWithSidebar exact path={Routes.Tables.path} component={Tables} />
