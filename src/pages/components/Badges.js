@@ -96,6 +96,16 @@ export default class Adduser extends Component{
            pandocument:'',
            drivinglicencedocument:'',
            passportdocument:'',
+           bankname:'',
+           accountnumber:'',
+           ifsccode:'',
+           branch:'',
+           benfiname:'',
+           upiid:'',
+           phonepay:'',
+           googlepay:'',
+           paytm:'',
+           bhimpay:'',
            
          
             customers:[]
@@ -123,7 +133,16 @@ export default class Adduser extends Component{
                   pandocument:response.data.pandocument,
                   drivinglicencedocument:response.data.drivinglicencedocument,
                   passportdocument:response.data.passportdocument,
-                 
+                  bankname:response.data.bankname,
+                  accountnumber:response.data.accountnumber,
+                  ifsccode:response.data.ifsccode,
+                  branch:response.data.branch,
+                  benfiname:response.data.benfiname,
+                  upiid:response.data.upiid,
+                  phonepay:response.data.phonepay,
+                  googlepay:response.data.googlepay,
+                  paytm:response.data.paytm,
+                  bhimpay:response.date.bhimpay,
 
 
                 
@@ -668,10 +687,10 @@ export default class Adduser extends Component{
         <Card border="light" className="bg-white shadow-sm mb-4">
       <Card.Body>
         <h3 className="mb-4">Bank Information</h3>
-        {/* <Row>
+        <Row>
             <Col md={4} className="mb-3">
               <Form.Group id="firstName">
-                <label>Bank Name: <span style={{marginLeft:"15px"}}>{this.state.bbankname}</span>     </label> 
+                <label>Bank Name: <span style={{marginLeft:"15px"}}>{this.state.bankname}</span>     </label> 
                 
               </Form.Group>
             </Col>
@@ -679,7 +698,7 @@ export default class Adduser extends Component{
             <Row>
             <Col md={4} className="mb-3">
               <Form.Group id="firstName">
-                <label>Account Number: <span style={{marginLeft:"15px"}}>{this.state.baccountnumber}</span>     </label> 
+                <label>Account Number: <span style={{marginLeft:"15px"}}>{this.state.accountnumber}</span>     </label> 
                 
               </Form.Group>
             </Col>
@@ -687,7 +706,7 @@ export default class Adduser extends Component{
             <Row>
             <Col md={4} className="mb-3">
               <Form.Group id="firstName">
-                <label>Branch Code: <span style={{marginLeft:"15px"}}>{this.state.bbranchcode}</span>     </label> 
+                <label>Branch : <span style={{marginLeft:"15px"}}>{this.state.branch}</span>     </label> 
                 
               </Form.Group>
             </Col>
@@ -695,7 +714,7 @@ export default class Adduser extends Component{
             <Row>
             <Col md={4} className="mb-3">
               <Form.Group id="firstName">
-                <label>IFSC Code: <span style={{marginLeft:"15px"}}>{this.state.bifsccode}</span>     </label> 
+                <label>IFSC Code: <span style={{marginLeft:"15px"}}>{this.state.ifsccode}</span>     </label> 
                 
               </Form.Group>
             </Col>
@@ -703,11 +722,51 @@ export default class Adduser extends Component{
             <Row>
             <Col md={4} className="mb-3">
               <Form.Group id="firstName">
-                <label>Passbook Proof: <span style={{marginLeft:"15px",borderColor:"black",border:"5px"}}>{this.state.bpassbookphoto}</span>     </label> 
+                <label>Benificiary Name: <span style={{marginLeft:"15px",borderColor:"black",border:"5px"}}>{this.state.benfiname}</span>     </label> 
                 
               </Form.Group>
             </Col>
-            </Row> */}
+            </Row>
+            <Row>
+            <Col md={4} className="mb-3">
+              <Form.Group id="firstName">
+                <label>Upi Id: <span style={{marginLeft:"15px",borderColor:"black",border:"5px"}}>{this.state.upiid}</span>     </label> 
+                
+              </Form.Group>
+            </Col>
+            </Row>
+            <Row>
+            <Col md={4} className="mb-3">
+              <Form.Group id="firstName">
+                <label>Phone Pay: <span style={{marginLeft:"15px",borderColor:"black",border:"5px"}}>{this.state.phonepay}</span>     </label> 
+                
+              </Form.Group>
+            </Col>
+            </Row>
+            <Row>
+            <Col md={4} className="mb-3">
+              <Form.Group id="firstName">
+                <label>Google Pay: <span style={{marginLeft:"15px",borderColor:"black",border:"5px"}}>{this.state.googlepay}</span>     </label> 
+                
+              </Form.Group>
+            </Col>
+            </Row>
+            <Row>
+            <Col md={4} className="mb-3">
+              <Form.Group id="firstName">
+                <label>Paytm: <span style={{marginLeft:"15px",borderColor:"black",border:"5px"}}>{this.state.paytm}</span>     </label> 
+                
+              </Form.Group>
+            </Col>
+            </Row>
+            <Row>
+            <Col md={4} className="mb-3">
+              <Form.Group id="firstName">
+                <label>Bhim Pay: <span style={{marginLeft:"15px",borderColor:"black",border:"5px"}}>{this.state.bhimpay}</span>     </label> 
+                
+              </Form.Group>
+            </Col>
+            </Row>
         </Card.Body>
         </Card> 
        
